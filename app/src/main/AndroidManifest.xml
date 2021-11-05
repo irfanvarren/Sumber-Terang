@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.irfanvarren.myapplication">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,10 +16,58 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
-        <activity android:name=".CategoryInputActivity"></activity>
-        <activity android:name=".CategoryActivity" />
-        <activity android:name=".ProductInputActivity" />
-        <activity android:name=".ProductActivity" />
+        <activity android:name=".ReportActivity"></activity>
+        <activity android:name=".ReceivableActivity" />
+        <activity android:name=".DebtActivity" />
+        <activity android:name=".DebtAndReceivableActivity" />
+        <activity
+            android:name=".PaymentActivity"
+            android:label="Pembelian"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyApplication.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".BuyCheckoutActivity"
+            android:label="Pembelian"
+            android:theme="@style/Theme.MyApplication.NoActionBar" />
+        <activity
+            android:name=".StockManagementViewActivity"
+            android:label="Manajemen Stok" />
+        <activity
+            android:name=".StockManagementActivity"
+            android:label="Manajemen Stok" />
+        <activity
+            android:name=".SellActivity"
+            android:label="Penjualan"
+            android:theme="@style/Theme.MyApplication.NoActionBar" />
+        <activity
+            android:name=".BuyActivity"
+            android:label="Pembelian"
+            android:theme="@style/Theme.MyApplication.NoActionBar" />
+        <activity
+            android:name=".DistributorInputActivity"
+            android:label="Distributor" />
+        <activity
+            android:name=".CustomerInputActivity"
+            android:label="Pelanggan" />
+        <activity
+            android:name=".DistributorActivity"
+            android:label="Distributor" />
+        <activity
+            android:name=".CustomerActivity"
+            android:label="Pelanggan" />
+        <activity
+            android:name=".CategoryInputActivity"
+            android:label="Kategori Produk" />
+        <activity
+            android:name=".CategoryActivity"
+            android:label="Kategori Produk" />
+        <activity
+            android:name=".ProductInputActivity"
+            android:label="Produk" />
+        <activity
+            android:name=".ProductActivity"
+            android:label="Produk" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +75,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.android.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

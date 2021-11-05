@@ -1,3 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="recycler_view_padding">10dp</dimen>
+    <dimen name="list_padding">10dp</dimen>
+    <dimen name="card_padding">3dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="card_margin_bot">12dp</dimen>
+    <dimen name="rounded_corner_radius">12dp</dimen>
+    <dimen name="txt_size_menu_title">16sp</dimen>
 </resources>

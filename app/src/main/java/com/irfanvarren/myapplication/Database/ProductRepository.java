@@ -9,6 +9,7 @@ import com.irfanvarren.myapplication.Model.Category;
 import com.irfanvarren.myapplication.Model.Product;
 import com.irfanvarren.myapplication.Model.ProductAndCategory;
 
+import java.util.Date;
 import java.util.List;
 
 public class ProductRepository {
@@ -17,6 +18,7 @@ public class ProductRepository {
     private LiveData<List<Product>> mAllProducts;
     private LiveData<List<Category>> mAllCategories;
     private LiveData<List<ProductAndCategory>> mAllProductAndCategories;
+    private AppDatabase db;
 
 
     // Note that in order to unit test the AppRepository, you have to remove the Application
@@ -24,7 +26,7 @@ public class ProductRepository {
     // See the BasicSample in the android-architecture-components repository at
     // https://github.com/googlesamples
     public ProductRepository(Application application) {
-        AppDatabase db = AppDatabase.getDatabase(application);
+        db = AppDatabase.getDatabase(application);
         mProductDao = db.productDao();
         mAllProducts = mProductDao.getAll();
         mCategoryDao = db.categoryDao();
@@ -42,24 +44,57 @@ public class ProductRepository {
 
     // You must call this on a non-UI thread or your app will throw an exception. Room ensures
     // that you're not doing any long running operations on the main thread, blocking the UI.
-    public void insertProduct(Product product) {
-        AppDatabase.databaseWriteExecutor.execute(() -> {
-            mProductDao.insertAll(product);
-        });
+    public long insertProduct(Product product) {
+        product.setCreatedAt(new Date());
+        product.setUpdatedAt(new Date());
+        long id = db.productDao().insert(product);
+        return id;
     }
 
     public void updateProduct(Product product){
+        product.setUpdatedAt(new Date());
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            mProductDao.updateAll(product);
+            mProductDao.update(product);
         });
+    }
+
+    public void deleteProduct(Product product){
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            mProductDao.delete(product);
+        });
+    }
+
+    public LiveData<List<ProductAndCategory>> searchProductByName(String query){
+        return db.productDao().searchByName(query);
     }
 
     public LiveData<List<Category>> getAllCategory(){ return mAllCategories;}
 
+
     public void insertCategory(Category category) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            mCategoryDao.insertAll(category);
+            mCategoryDao.insert(category);
         });
+    }
+
+    public void updateCategory(Category category){
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            mCategoryDao.update(category);
+        });
+    }
+
+    public void deleteCategory(Category category){
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            mCategoryDao.delete(category);
+        });
+    }
+
+    public Integer getProductPrice(Integer productId){
+        Integer price = db.productDao().getProductPrice(productId);
+        if(price == null){
+           price = new Integer(0);
+        }
+        return price;
     }
 
 
