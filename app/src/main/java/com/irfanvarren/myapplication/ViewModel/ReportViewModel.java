@@ -20,14 +20,9 @@ public class ReportViewModel extends AndroidViewModel {
 
     }
 
-    //public LiveData<Double> getTotalProfit(int id){
-        //return mRepository.getTotalProfit(id);
-    //}
+    public LiveData<List<Report>> getThisMonth(){
+        return mRepository.getThisMonth();
+    }
 
-
-    //public LiveData<List<Report>> getAll(String type) {
-        //mAllReportSync = mRepository.getAll();
-        //return mAllReportSync;
-    //}
 
 }

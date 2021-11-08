@@ -43,7 +43,7 @@ import java.util.concurrent.Executors;
                 Order.class, OrderDetail.class,
                 Debt.class, Receivable.class,
                 Payment.class,
-                OtherCost.class
+                OtherCost.class,
         },
         version = 1,
         exportSchema = true
@@ -67,6 +67,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ReceivableDao receivableDao();
 
     public abstract PaymentDao paymentDao();
+
+    public abstract ReportDao reportDao();
 
     private static volatile AppDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
