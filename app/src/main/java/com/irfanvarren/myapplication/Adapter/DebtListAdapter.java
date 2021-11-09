@@ -30,6 +30,7 @@ import com.irfanvarren.myapplication.R;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;  
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,12 +67,20 @@ public class DebtListAdapter extends ListAdapter<Debt,DebtListAdapter.ViewHolder
             rootView = view;
         }
         public void bind(Debt debt){
+            NumberFormat nf = NumberFormat.getNumberInstance(new Locale("in", "ID"));
             Log.d("DEBT",new Gson().toJson(debt));
             Integer distributorId = debt.getDistributorId();
             DistributorRepository dRepository = new DistributorRepository(mApplication);
             Distributor distributor = dRepository.findById(distributorId);
             txtName.setText(distributor.getName());
-
+            txtAmount.setText(nf.format(debt.getAmount()));
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
+            txtDueDate.setText(dateFormat.format(debt.getDueDate()));
+            if(debt.getStatus()){
+                txtStatus.setText("Lunas");
+            }else{
+                txtStatus.setText("Belum Lunas");
+            }  
         }
 
         @Override
