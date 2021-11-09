@@ -47,7 +47,7 @@ import java.util.concurrent.Executors;
                 OtherCost.class,
                 Report.class
         },
-        version = 1,
+        version = 2,
         exportSchema = true
 )
 

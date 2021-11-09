@@ -17,6 +17,9 @@ public interface DistributorDao {
     @Query("SELECT * FROM distributors")
     LiveData<List<Distributor>> getAll();
 
+    @Query("SELECT * FROM distributors where id = :id ")
+    Distributor findById(int id);
+
     @Insert
     void insertAll(Distributor... distributors);
 

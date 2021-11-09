@@ -53,13 +53,18 @@ public class ReportListAdapter extends ListAdapter<Report,ReportListAdapter.View
         public void bind(Report report){
             NumberFormat nf = NumberFormat.getNumberInstance(new Locale("in", "ID"));
             mReport = report;
+            
+            
 
-          
-            Double totalSell = report.getTotalSell();
-            txtTotalSell.setText("Rp. " + nf.format(totalSell));
+            Double totalSell = (Double) report.getTotalSell();
+            if(totalSell != null){
+            txtTotalSell.setText(nf.format(totalSell));
+            }
 
-            Double totalPurchase = report.getTotalPurchase();
-            txtTotalPurchase.setText("Rp. " + nf.format(totalPurchase));
+            Double totalPurchase = (Double) report.getTotalPurchase();
+            if(totalPurchase != null){
+            txtTotalPurchase.setText(nf.format(totalPurchase));
+            }
 
             rootView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -77,7 +82,7 @@ public class ReportListAdapter extends ListAdapter<Report,ReportListAdapter.View
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.report_list,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.reports_list,parent,false);
         return new ViewHolder(view,mReportListener);
     }
 

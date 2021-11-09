@@ -84,7 +84,7 @@ public class PaymentFragment extends Fragment {
     private CustomerViewModel mCustomerViewModel;
     private MaterialDatePicker mTransactionDatePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Select Date").build();
     private MaterialDatePicker mDueDatePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Select Date").build();
-    private Integer mDistributorId, mPurchaseId, mOrderId;
+    private Integer mDistributorId,mCustomerId, mPurchaseId, mOrderId;
     private Integer mTransactionType;
     private PurchaseViewModel purchaseViewModel;
     private OrderViewModel orderViewModel;
@@ -151,6 +151,7 @@ public class PaymentFragment extends Fragment {
         LinearLayout distributorWrapper = (LinearLayout) view.findViewById(R.id.distributorWrapper);
         LinearLayout customerWrapper = (LinearLayout) view.findViewById(R.id.customerWrapper);
         ImageButton addDistributorBtn = (ImageButton) view.findViewById(R.id.addDistributorBtn);
+        ImageButton addCustomerBtn = (ImageButton) view.findViewById(R.id.addCustomerBtn);
         EditText txtInvoiceNo = (EditText) view.findViewById(R.id.invoiceNo);
         EditText txtNote = (EditText) view.findViewById(R.id.note);
         EditText txtPaymentAmount = (EditText) view.findViewById(R.id.paymentAmount);
@@ -220,6 +221,23 @@ public class PaymentFragment extends Fragment {
             }
         });
 
+        txtCustomer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Customer selectedCat = (Customer) adapterView.getItemAtPosition(i);
+                mCustomerId = selectedCat.getId();
+            }
+        });
+
+        addCustomerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), CustomerInputActivity.class);
+                intent.putExtra("action", "add");
+                startActivity(intent);
+            }
+        });
+
         transactionDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -283,7 +301,7 @@ public class PaymentFragment extends Fragment {
                     String invoiceNo = mInvoiceNo;
 
 
-                    if (mDistributorId != null) {
+                    if (mDistributorId != null && mDistributorId != 0) {
                         purchase.setDistributorId(mDistributorId);
                     }
 
@@ -331,7 +349,13 @@ public class PaymentFragment extends Fragment {
                     }
 
                     if(amountPaid < mSubtotal){
+                        Log.d("DISTRIBUTOR_ID",String.valueOf(mDistributorId));
+                        if (mDistributorId == null || mDistributorId == 0) {
+                            Toast.makeText(getActivity().getApplicationContext(),"Hutang wajib memilih distributor !",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         Debt debt = new Debt();
+                        debt.setDistributorId(mDistributorId);
                         debt.setPurchaseId(mPurchaseId);
                         debt.setAmount(mSubtotal - amountPaid);
                         debt.setDueDate(mDueDate);
@@ -356,7 +380,7 @@ public class PaymentFragment extends Fragment {
                             inventory.setType("in");
                             inventory.setTransactionType("buy");
                             inventory.setProductName(cartItem.getName());
-                            if (mDistributorId != null) {
+                            if (mDistributorId != null && mDistributorId != 0) {
                                 inventory.setDistributorId(mDistributorId);
                             }
                             inventory.setCreatedAt(new Date());
@@ -380,8 +404,8 @@ public class PaymentFragment extends Fragment {
                     Order order = new Order();
                     String invoiceNo = mInvoiceNo;
 
-                    if (mDistributorId != null) {
-                        order.setDistributorId(mDistributorId);
+                    if (mCustomerId != null && mCustomerId != 0) {
+                        order.setCustomerId(mCustomerId);
                     }
 
                     if (txtInvoiceNo.getText().toString().trim().length() > 0) {
@@ -430,6 +454,11 @@ public class PaymentFragment extends Fragment {
                     }
 
                     if(amountPaid < mSubtotal){
+
+                        if (mCustomerId == null || mCustomerId == 0) {
+                            Toast.makeText(getActivity().getApplicationContext(),"Piutang wajib memilih pelanggan !",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         Receivable receivable = new Receivable();
                         receivable.setOrderId(mOrderId);
                         receivable.setAmount(mSubtotal - amountPaid);
@@ -456,8 +485,8 @@ public class PaymentFragment extends Fragment {
                             inventory.setType("out");
                             inventory.setTransactionType("sell");
                             inventory.setProductName(cartItem.getName());
-                            if (mDistributorId != null) {
-                                inventory.setDistributorId(mDistributorId);
+                            if (mCustomerId != null && mCustomerId != 0) {
+                                inventory.setCustomerId(mCustomerId);
                             }
                             inventory.setCreatedAt(new Date());
                             inventory.setUpdatedAt(new Date());

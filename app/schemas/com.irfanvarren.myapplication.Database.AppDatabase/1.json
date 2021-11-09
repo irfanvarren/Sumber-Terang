@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4b0f66a38de8714df803c537da145c9c",
+    "identityHash": "471c6d973e967e41dd16aaf1c3751daf",
     "entities": [
       {
         "tableName": "products",
@@ -1004,13 +1004,19 @@
       },
       {
         "tableName": "Report",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `total_sell` REAL, `total_purchase` REAL, `transaction_date` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `total_transaksi` INTEGER, `total_sell` REAL, `total_purchase` REAL, `transaction_date` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
+          },
+          {
+            "fieldPath": "totalTransaction",
+            "columnName": "total_transaksi",
+            "affinity": "INTEGER",
+            "notNull": false
           },
           {
             "fieldPath": "totalSell",
@@ -1027,7 +1033,7 @@
           {
             "fieldPath": "transactionDate",
             "columnName": "transaction_date",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": false
           }
         ],
@@ -1044,7 +1050,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4b0f66a38de8714df803c537da145c9c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '471c6d973e967e41dd16aaf1c3751daf')"
     ]
   }
 }

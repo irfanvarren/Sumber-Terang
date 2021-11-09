@@ -77,7 +77,7 @@
                             android:id="@+id/totalSell"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Rp 0"
+                            android:text="Rp. 0"
                             android:textColor="#FF444444"
                             android:textStyle="bold" />
 
@@ -103,7 +103,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="end"
-                            android:text="Rp 832,125,000"
+                            android:text="Rp. 0"
                             android:textAlignment="viewEnd"
                             android:textColor="#FF444444"
                             android:textStyle="bold" />

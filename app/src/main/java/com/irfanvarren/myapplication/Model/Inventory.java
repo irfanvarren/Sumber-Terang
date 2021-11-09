@@ -20,6 +20,9 @@ public class Inventory implements Serializable {
     @ColumnInfo(name = "distributor_id")
     public int distributorId;
 
+    @ColumnInfo(name ="customer_id")
+    public int customerId;
+
     @ColumnInfo(name="purchase_id")
     public int purchaseId;
 
@@ -117,6 +120,15 @@ public class Inventory implements Serializable {
     public void setDistributorId(int distributorId) {
         this.distributorId = distributorId;
     }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
 
     public int getPurchaseId() {
         return purchaseId;

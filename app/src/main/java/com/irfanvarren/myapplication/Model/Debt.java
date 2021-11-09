@@ -15,6 +15,9 @@ public class Debt {
     @ColumnInfo(name = "purchase_id")
     public Integer purchaseId;
 
+    @ColumnInfo(name = "distributor_id")
+    public Integer distributorId;
+
     @ColumnInfo(name = "amount", defaultValue = "0")
     public Double amount;
 
@@ -57,6 +60,14 @@ public class Debt {
 
     public void setPurchaseId(Integer purchaseId) {
         this.purchaseId = purchaseId;
+    }
+
+    public Integer getDistributorId() {
+        return distributorId;
+    }
+
+    public void setDistributorId(Integer distributorId) {
+        this.distributorId = distributorId;
     }
 
 

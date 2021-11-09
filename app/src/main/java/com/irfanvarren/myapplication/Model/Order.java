@@ -12,8 +12,8 @@ public class Order {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    @ColumnInfo(name="distributor_id")
-    public int distributorId;
+    @ColumnInfo(name="customer_id")
+    public int customerId;
 
     @ColumnInfo(name="name")
     public String name;
@@ -84,12 +84,12 @@ public class Order {
         this.id = id;
     }
 
-    public int getDistributorId() {
-        return distributorId;
+    public int getCustomerId() {
+        return customerId;
     }
 
-    public void setDistributorId(int distributorId) {
-        this.distributorId = distributorId;
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
     public String getName() {

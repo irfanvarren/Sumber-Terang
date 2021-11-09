@@ -73,18 +73,21 @@ public class ReportActivity extends AppCompatActivity implements ReportListAdapt
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
         android.R.layout.simple_dropdown_item_1line, DURATION_TYPES);
         mTxtDurationType.setAdapter(adapter);
-        mTxtDurationType.setText(adapter.getItem(0).toString(),false);
+        mTxtDurationType.setText(adapter.getItem(1).toString(),false);
         mTxtDurationType.setThreshold(0);
         mTxtDurationType.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 durationType =  adapterView.getItemAtPosition(i).toString();
-                if(durationType.equals("Pilih Tanggal")){
-                    customDateWrapper.setVisibility(View.VISIBLE);                  
-                    Toast.makeText(getApplicationContext(),"show hidden select date",Toast.LENGTH_SHORT).show();
+                if(durationType.equals("Bulan Ini")) {
+                   
+                   
+                }else if(durationType.equals("Pilih Tanggal")){
+                    Toast.makeText(getApplicationContext(),"Fitur ini masih belum tersedia",Toast.LENGTH_SHORT).show();
+                    //customDateWrapper.setVisibility(View.VISIBLE);                  
+                    //Toast.makeText(getApplicationContext(),"show hidden select date",Toast.LENGTH_SHORT).show();
                 }else{
-                   
-                   
+                    Toast.makeText(getApplicationContext(),"Fitur ini masih belum tersedia",Toast.LENGTH_SHORT).show();
                 }
             }
         });

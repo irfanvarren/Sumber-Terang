@@ -47,7 +47,50 @@
         </LinearLayout>
 
         <View style="@style/Divider" />
-
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFE1E1E1"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="10dp"
+        android:orientation="horizontal">
+           <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:layout_weight="1">
+                <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hutang"
+                />
+                <TextView
+                android:id="@+id/totalDebt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/red"
+                android:text="Rp. 0"
+                />
+           </LinearLayout>
+           <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:layout_weight="1">
+                <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Transaksi"
+                />
+                <TextView
+                android:id="@+id/totalTransaction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                />
+           </LinearLayout>
+        </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"

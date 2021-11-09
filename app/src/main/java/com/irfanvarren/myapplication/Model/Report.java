@@ -14,7 +14,10 @@ import java.util.Date;
 @Entity
 public class Report {
     @PrimaryKey
-public int id;
+    public Integer id;
+
+    @ColumnInfo(name = "total_transaction")
+    public Integer totalTransaction;
 
     @ColumnInfo(name = "total_sell")
     public Double totalSell;
@@ -23,8 +26,16 @@ public int id;
     public Double totalPurchase;
 
     @ColumnInfo(name = "transaction_date")
-    @TypeConverters(DateConverter.class)
-    public Date transactionDate;
+    public String transactionDate;
+
+       
+    public void setTotalTransaction(Integer totalTransaction) {
+        this.totalTransaction = totalTransaction;
+    }
+
+    public Integer getTotalTransaction() {
+        return totalTransaction;
+    }
 
     public Double getTotalSell() {
         return totalSell;
@@ -45,11 +56,11 @@ public int id;
     }
 
 
-    public Date getTransactionDate() {
+    public String getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(Date transactionDate) {
+    public void setTransactionDate(String transactionDate) {
         this.transactionDate = transactionDate;
     }
 

@@ -26,6 +26,11 @@ public class DistributorRepository {
 
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
+
+    public Distributor findById(int id){
+        return db.distributorDao().findById(id);
+    }
+
     public LiveData<List<Distributor>> getAll() {
         return mAllDistributors;
     }
