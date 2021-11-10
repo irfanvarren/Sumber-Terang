@@ -6,14 +6,17 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
-
+import java.io.Serializable;
 @Entity(tableName = "receivables")
-public class Receivable {
+public class Receivable implements Serializable {
     @PrimaryKey(autoGenerate = true)
     public Integer id;
 
     @ColumnInfo(name = "order_id")
     public Integer orderId;
+
+    @ColumnInfo(name = "customer_id")
+    public Integer customerId;
 
     @ColumnInfo(name = "amount", defaultValue = "0")
     public Double amount;
@@ -57,6 +60,14 @@ public class Receivable {
 
     public void setOrderId(Integer orderId) {
         this.orderId = orderId;
+    }
+
+    public Integer getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 
     public Double getAmount() {

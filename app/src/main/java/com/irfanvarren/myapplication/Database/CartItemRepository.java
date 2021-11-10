@@ -35,6 +35,8 @@ public class CartItemRepository {
         return id;
     }
 
+    
+
     public void insertAll(CartItem... cartItems){
         db.cartItemDao().insertAll(cartItems);
     }
@@ -43,12 +45,17 @@ public class CartItemRepository {
         db.cartItemDao().update(cartItem);
     }
 
+
     public void update(Integer productId, Integer qty, Double price){
         db.cartItemDao().updateQtyPrice(productId,qty,price);
     }
 
     public void delete(CartItem cartItem){
         db.cartItemDao().delete(cartItem);
+    }
+
+    public void deleteByProductId(Integer productId){
+        db.cartItemDao().deleteByProductId(productId);
     }
 
     public void deleteAll(){

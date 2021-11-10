@@ -67,14 +67,17 @@ public class DebtListAdapter extends ListAdapter<Debt,DebtListAdapter.ViewHolder
             rootView = view;
         }
         public void bind(Debt debt){
+            mDebt = debt;
             NumberFormat nf = NumberFormat.getNumberInstance(new Locale("in", "ID"));
            Integer distributorId = debt.getDistributorId();
             DistributorRepository dRepository = new DistributorRepository(mApplication);
             Distributor distributor = dRepository.findById(distributorId);
-            txtName.setText(distributor.getName());
+            if(distributor != null){
+                txtName.setText(distributor.getName());
+            }
             txtAmount.setText(nf.format(debt.getAmount()));
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
-            txtDueDate.setText(dateFormat.format(debt.getDueDate()));
+            txtDueDate.setText("JT: "+dateFormat.format(debt.getDueDate()));
             if(debt.getStatus()){
                 txtStatus.setText("Lunas");
             }else{

@@ -31,6 +31,11 @@ public class CustomerRepository {
         return mAllCustomers;
     }
 
+    public Customer findById(int id){
+        return db.customerDao().findById(id);
+    }
+
+
     // You must call this on a non-UI thread or your app will throw an exception. Room ensures
     // that you're not doing any long running operations on the main thread, blocking the UI.
     public long insert(Customer customer) {

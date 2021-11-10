@@ -18,9 +18,13 @@
         android:theme="@style/Theme.MyApplication">
         <activity android:name=".ReportActivity"></activity>
         <activity android:name=".ReceivableActivity" />
+        <activity android:name=".ReceivableDetailActivity" />
+        <activity android:name=".ReceivableInputActivity" />
+        <activity android:name=".ReceivablePaymentActivity" />
         <activity android:name=".DebtActivity" />
         <activity android:name=".DebtDetailActivity" />
-         <activity android:name=".DebtInputActivity" />
+        <activity android:name=".DebtInputActivity" />
+        <activity android:name=".DebtPaymentActivity" />
         <activity android:name=".DebtAndReceivableActivity" />
         <activity
             android:name=".PaymentActivity"

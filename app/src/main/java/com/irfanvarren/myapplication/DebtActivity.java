@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.irfanvarren.myapplication.Adapter.DebtListAdapter;
@@ -73,8 +74,9 @@ public class DebtActivity extends AppCompatActivity implements DebtListAdapter.O
 
     @Override
     public void DebtClick(Integer position,Debt debt){
-
+        Log.d("DEBT",new Gson().toJson(debt));
         Intent intent = new Intent(DebtActivity.this, DebtDetailActivity.class);
+        intent.putExtra("debt", debt);
         startActivity(intent);
     }
 }

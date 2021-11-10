@@ -34,6 +34,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.TextUtils;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -168,7 +169,11 @@ public class PaymentFragment extends Fragment {
         txtPaymentAmount.addTextChangedListener(new TextWatcher() {
             
             public void afterTextChanged(Editable s) {
-                if(Double.valueOf(s.toString()) < mSubtotal){
+                Double amount = new Double(0);
+                if (!TextUtils.isEmpty(s.toString())) {
+                    amount = new Double(s.toString());
+                }
+                if(amount < mSubtotal){
                     ckFullPayment.setChecked(false);
                 }
             }

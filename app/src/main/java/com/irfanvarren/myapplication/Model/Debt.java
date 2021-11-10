@@ -6,9 +6,9 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
-
+import java.io.Serializable;
 @Entity(tableName = "debts")
-public class Debt {
+public class Debt implements Serializable {
     @PrimaryKey(autoGenerate = true)
     public Integer id;
 

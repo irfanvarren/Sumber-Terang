@@ -17,6 +17,10 @@ public interface CustomerDao {
     @Query("SELECT * FROM customers")
     LiveData<List<Customer>> getAll();
 
+    @Query("SELECT * FROM customers where id = :id ")
+    Customer findById(int id);
+
+
     @Insert
     void insertAll(Customer... customers);
 

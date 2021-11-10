@@ -1,9 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ReceivableActivity">
+    android:clipToPadding="false"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="10dp">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:paddingVertical="4dp"
+                android:paddingHorizontal="8dp"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/roundedrect_darkgray_border"
+                android:hint="Cari Produk"
+                android:drawableStart="@drawable/ic_baseline_search_24"
+                android:drawablePadding="8dp"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_baseline_search_24" 
+                android:editable="false"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:paddingVertical="4dp"
+                android:paddingHorizontal="8dp"
+                android:drawableStart="@drawable/ic_baseline_calendar_today_24"
+                android:background="@drawable/roundedrect_darkgray_border"
+                android:layout_weight="1"
+                android:hint="Due Date"
+                android:drawablePadding="8dp"
+                android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
+                android:editable="false" />
+        </LinearLayout>
+
+        <View style="@style/Divider" />
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFE1E1E1"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="10dp"
+        android:orientation="horizontal">
+           <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:layout_weight="1">
+                <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hutang"
+                />
+                <TextView
+                android:id="@+id/totalReceivable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/red"
+                android:text="Rp. 0"
+                />
+           </LinearLayout>
+           <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:layout_weight="1">
+                <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Transaksi"
+                />
+                <TextView
+                android:id="@+id/totalTransaction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                />
+           </LinearLayout>
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="12dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.175" />
+
+        <RelativeLayout
+            android:id="@+id/addBtn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.65"
+            android:background="@drawable/roundedrect_green"
+            android:clickable="true">
+            <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:text="Tambah Hutang"
+            android:textAlignment="center"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:textColor="@color/white"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.175" />
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

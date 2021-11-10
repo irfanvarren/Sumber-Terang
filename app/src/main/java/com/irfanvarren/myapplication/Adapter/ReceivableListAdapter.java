@@ -1,4 +1,5 @@
 package com.irfanvarren.myapplication.Adapter;
+
 import android.app.Application;
 
 import android.content.Context;
@@ -15,6 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
+
+
 
 
 import com.google.gson.Gson;
@@ -38,9 +42,9 @@ public class ReceivableListAdapter extends ListAdapter<Receivable,ReceivableList
     private Application mApplication;
 
 
-    public ReceivableListAdapter(DiffUtil.ItemCallback<Receivable> diffCallback, OnReceivableListener ReceivableListener, Application application) {
+    public ReceivableListAdapter(DiffUtil.ItemCallback<Receivable> diffCallback, OnReceivableListener receivableListener, Application application) {
         super(diffCallback);
-        this.mReceivableListener = ReceivableListener;
+        this.mReceivableListener = receivableListener;
         this.mApplication = application;
     }
 
@@ -51,9 +55,9 @@ public class ReceivableListAdapter extends ListAdapter<Receivable,ReceivableList
         private TextView txtName,txtDueDate,txtStatus,txtAmount;
         private OnReceivableListener mReceivableListener;
         private Application mApplication;
-        public ViewHolder(View view,OnReceivableListener ReceivableListener, Application application){
+        public ViewHolder(View view,OnReceivableListener receivableListener, Application application){
             super(view);
-            mReceivableListener = ReceivableListener;
+            mReceivableListener = receivableListener;
             mContext = view.getContext();
             mApplication = application;
             txtName = view.findViewById(R.id.name);
@@ -62,20 +66,27 @@ public class ReceivableListAdapter extends ListAdapter<Receivable,ReceivableList
             txtAmount = view.findViewById(R.id.amount);
             rootView = view;
         }
-        public void bind(Receivable Receivable){
+        public void bind(Receivable receivable){
             NumberFormat nf = NumberFormat.getNumberInstance(new Locale("in", "ID"));
-           Integer customerId = Receivable.getCustomerId();
+           Integer customerId = receivable.getCustomerId();
             CustomerRepository dRepository = new CustomerRepository(mApplication);
             Customer customer = dRepository.findById(customerId);
             txtName.setText(customer.getName());
-            txtAmount.setText(nf.format(Receivable.getAmount()));
+            txtAmount.setText(nf.format(receivable.getAmount()));
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
-            txtDueDate.setText(dateFormat.format(Receivable.getDueDate()));
-            if(Receivable.getStatus()){
+            txtDueDate.setText(dateFormat.format(receivable.getDueDate()));
+            if(receivable.getStatus()){
                 txtStatus.setText("Lunas");
             }else{
                 txtStatus.setText("Belum Lunas");
             }  
+
+            rootView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mReceivableListener.ReceivableClick(getAdapterPosition(),mReceivable);
+                }
+            });
         }
 
         @Override
@@ -86,7 +97,7 @@ public class ReceivableListAdapter extends ListAdapter<Receivable,ReceivableList
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.Receivables_list,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.receivables_list,parent,false);
         return new ViewHolder(view,mReceivableListener, mApplication);
     }
 
@@ -110,7 +121,7 @@ public class ReceivableListAdapter extends ListAdapter<Receivable,ReceivableList
 
 
     public interface OnReceivableListener{
-        public void ReceivableClick(Integer position,Receivable Receivable);
+        public void ReceivableClick(Integer position,Receivable receivable);
     }
 
 }

@@ -244,10 +244,12 @@ public class SellFragment extends Fragment implements ProductListAdapter.OnProdu
             CartItem updateItem = cartItems.get(current.product.id);
             updateItem.setQty(intQty);
             cartItems.put(current.product.id, updateItem);
+            cartRepository.update(current.product.id,intQty,updateItem.getPrice());
         } else {
             CartItem cartItem = new CartItem(1, current.product);
             cartItem.setQty(intQty);
             cartItems.put(current.product.id, cartItem);
+            cartRepository.insert(cartItem);
         }
 
         txtQty.setText(String.valueOf(intQty));
@@ -264,11 +266,13 @@ public class SellFragment extends Fragment implements ProductListAdapter.OnProdu
 
             if (cartItems.containsKey(current.product.id)) {
                 if (intQty == 0) {
+                    cartRepository.deleteByProductId(current.product.id);
                     cartItems.remove(current.product.id);
                 } else {
                     CartItem updateItem = cartItems.get(current.product.id);
                     updateItem.setQty(intQty);
                     cartItems.put(current.product.id, updateItem);
+                    cartRepository.update(current.product.id,intQty,updateItem.getPrice());
                 }
             }
             Log.d("CART_ITEMS", new Gson().toJson(cartItems));
@@ -285,11 +289,13 @@ public class SellFragment extends Fragment implements ProductListAdapter.OnProdu
             updateItem.setQty(qty);
             updateItem.setPrice(price);
             cartItems.put(productId, updateItem);
+            cartRepository.update(productId,qty,price);
         } else {
             CartItem cartItem = new CartItem(1, product);
             cartItem.setQty(qty);
             cartItem.setPrice(price);
             cartItems.put(productId, cartItem);
+            cartRepository.insert(cartItem);
         }
         ProductViewHolder viewHolder = (ProductViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
         View itemView = viewHolder.itemView;

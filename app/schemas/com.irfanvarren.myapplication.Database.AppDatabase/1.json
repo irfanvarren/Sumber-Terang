@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "471c6d973e967e41dd16aaf1c3751daf",
+    "identityHash": "8dd9888f7108eebf019e50277a20ef32",
     "entities": [
       {
         "tableName": "products",
@@ -108,7 +108,7 @@
       },
       {
         "tableName": "inventory_managements",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `product_id` INTEGER NOT NULL, `distributor_id` INTEGER NOT NULL, `purchase_id` INTEGER NOT NULL, `order_id` INTEGER NOT NULL, `invoice_no` TEXT, `type` TEXT, `transaction_type` TEXT, `product_name` TEXT, `price` REAL NOT NULL, `qty` INTEGER NOT NULL, `note` TEXT, `created_at` INTEGER DEFAULT CURRENT_TIMESTAMP, `updated_at` INTEGER DEFAULT CURRENT_TIMESTAMP)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `product_id` INTEGER NOT NULL, `distributor_id` INTEGER NOT NULL, `customer_id` INTEGER NOT NULL, `purchase_id` INTEGER NOT NULL, `order_id` INTEGER NOT NULL, `invoice_no` TEXT, `type` TEXT, `transaction_type` TEXT, `product_name` TEXT, `price` REAL NOT NULL, `qty` INTEGER NOT NULL, `note` TEXT, `created_at` INTEGER DEFAULT CURRENT_TIMESTAMP, `updated_at` INTEGER DEFAULT CURRENT_TIMESTAMP)",
         "fields": [
           {
             "fieldPath": "id",
@@ -125,6 +125,12 @@
           {
             "fieldPath": "distributorId",
             "columnName": "distributor_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "customerId",
+            "columnName": "customer_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -555,7 +561,7 @@
       },
       {
         "tableName": "orders",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `distributor_id` INTEGER NOT NULL, `name` TEXT, `phone` TEXT, `email` TEXT, `address` TEXT, `invoice_no` TEXT, `subtotal` REAL DEFAULT 0, `other_cost` REAL DEFAULT 0, `discount` REAL DEFAULT 0, `discount_percent` INTEGER DEFAULT 0, `total` REAL DEFAULT 0, `amount_paid` REAL DEFAULT 0, `note` TEXT, `invoice_path` TEXT, `status` INTEGER DEFAULT 0, `transaction_date` INTEGER, `due_date` INTEGER, `created_at` INTEGER DEFAULT CURRENT_TIMESTAMP, `updated_at` INTEGER DEFAULT CURRENT_TIMESTAMP)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `customer_id` INTEGER NOT NULL, `name` TEXT, `phone` TEXT, `email` TEXT, `address` TEXT, `invoice_no` TEXT, `subtotal` REAL DEFAULT 0, `other_cost` REAL DEFAULT 0, `discount` REAL DEFAULT 0, `discount_percent` INTEGER DEFAULT 0, `total` REAL DEFAULT 0, `amount_paid` REAL DEFAULT 0, `note` TEXT, `invoice_path` TEXT, `status` INTEGER DEFAULT 0, `transaction_date` INTEGER, `due_date` INTEGER, `created_at` INTEGER DEFAULT CURRENT_TIMESTAMP, `updated_at` INTEGER DEFAULT CURRENT_TIMESTAMP)",
         "fields": [
           {
             "fieldPath": "id",
@@ -564,8 +570,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "distributorId",
-            "columnName": "distributor_id",
+            "fieldPath": "customerId",
+            "columnName": "customer_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -756,7 +762,7 @@
       },
       {
         "tableName": "debts",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `purchase_id` INTEGER, `amount` REAL DEFAULT 0, `amount_paid` REAL DEFAULT 0, `due_date` INTEGER, `note` TEXT, `status` INTEGER DEFAULT false, `created_at` INTEGER DEFAULT CURRENT_TIMESTAMP, `updated_at` INTEGER DEFAULT CURRENT_TIMESTAMP)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `purchase_id` INTEGER, `distributor_id` INTEGER, `amount` REAL DEFAULT 0, `amount_paid` REAL DEFAULT 0, `due_date` INTEGER, `note` TEXT, `status` INTEGER DEFAULT false, `created_at` INTEGER DEFAULT CURRENT_TIMESTAMP, `updated_at` INTEGER DEFAULT CURRENT_TIMESTAMP)",
         "fields": [
           {
             "fieldPath": "id",
@@ -767,6 +773,12 @@
           {
             "fieldPath": "purchaseId",
             "columnName": "purchase_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "distributorId",
+            "columnName": "distributor_id",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -829,7 +841,7 @@
       },
       {
         "tableName": "receivables",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `order_id` INTEGER, `amount` REAL DEFAULT 0, `amount_paid` REAL DEFAULT 0, `due_date` INTEGER, `note` TEXT, `status` INTEGER DEFAULT false, `created_at` INTEGER DEFAULT CURRENT_TIMESTAMP, `updated_at` INTEGER DEFAULT CURRENT_TIMESTAMP)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `order_id` INTEGER, `customer_id` INTEGER, `amount` REAL DEFAULT 0, `amount_paid` REAL DEFAULT 0, `due_date` INTEGER, `note` TEXT, `status` INTEGER DEFAULT false, `created_at` INTEGER DEFAULT CURRENT_TIMESTAMP, `updated_at` INTEGER DEFAULT CURRENT_TIMESTAMP)",
         "fields": [
           {
             "fieldPath": "id",
@@ -840,6 +852,12 @@
           {
             "fieldPath": "orderId",
             "columnName": "order_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "customerId",
+            "columnName": "customer_id",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -1004,7 +1022,7 @@
       },
       {
         "tableName": "Report",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `total_transaksi` INTEGER, `total_sell` REAL, `total_purchase` REAL, `transaction_date` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `total_transaction` INTEGER, `total_sell` REAL, `total_purchase` REAL, `transaction_date` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -1014,7 +1032,7 @@
           },
           {
             "fieldPath": "totalTransaction",
-            "columnName": "total_transaksi",
+            "columnName": "total_transaction",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -1050,7 +1068,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '471c6d973e967e41dd16aaf1c3751daf')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8dd9888f7108eebf019e50277a20ef32')"
     ]
   }
 }

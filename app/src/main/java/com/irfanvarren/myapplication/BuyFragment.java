@@ -243,7 +243,8 @@ public class BuyFragment extends Fragment implements ProductListAdapter.OnProduc
             CartItem updateItem = cartItems.get(current.product.id);
             updateItem.setQty(intQty);
             cartItems.put(current.product.id, updateItem);
-            cartRepository.update(updateItem);
+            cartRepository.update(current.product.id,intQty,updateItem.getPrice());
+          
         } else {
             CartItem cartItem = new CartItem(1, current.product);
             cartItem.setQty(intQty);
@@ -266,14 +267,14 @@ public class BuyFragment extends Fragment implements ProductListAdapter.OnProduc
 
             if (cartItems.containsKey(current.product.id)) {
                 if (intQty == 0) {
-                    cartRepository.delete(cartItems.get(current.product.id));
+                    cartRepository.deleteByProductId(current.product.id);
                     cartItems.remove(current.product.id);
                     
                 } else {
                     CartItem updateItem = cartItems.get(current.product.id);
                     updateItem.setQty(intQty);
                     cartItems.put(current.product.id, updateItem);
-                    cartRepository.update(updateItem);
+                    cartRepository.update(current.product.id,intQty,updateItem.getPrice());
                 }
             }
             Log.d("CART_ITEMS", new Gson().toJson(cartItems));
@@ -290,7 +291,7 @@ public class BuyFragment extends Fragment implements ProductListAdapter.OnProduc
             updateItem.setQty(qty);
             updateItem.setPrice(price);
             cartItems.put(productId, updateItem);
-            cartRepository.update(updateItem);
+            cartRepository.update(productId,qty,price);
         } else {
             CartItem cartItem = new CartItem(1, product);
             cartItem.setQty(qty);
