@@ -50,7 +50,7 @@ public class BuyFragment extends Fragment implements ProductListAdapter.OnProduc
     private HashMap<Integer, CartItem> cartItems = new HashMap<Integer, CartItem>();
     private AddCartItemDialogFragment.OnFinishListener onFinishListener = this;
     private CartItemViewModel cartItemViewModel;
-    CartItemRepository cartRepository = new CartItemRepository(getActivity().getApplication());
+    private CartItemRepository cartRepository;
 
     private RecyclerView recyclerView;
 
@@ -108,7 +108,10 @@ public class BuyFragment extends Fragment implements ProductListAdapter.OnProduc
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        
         super.onCreate(savedInstanceState);
+        cartRepository = new CartItemRepository(getActivity().getApplication());
+        
         if (savedInstanceState != null) {
 
         }
@@ -267,7 +270,6 @@ public class BuyFragment extends Fragment implements ProductListAdapter.OnProduc
                     cartItems.remove(current.product.id);
                     
                 } else {
-
                     CartItem updateItem = cartItems.get(current.product.id);
                     updateItem.setQty(intQty);
                     cartItems.put(current.product.id, updateItem);

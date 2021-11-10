@@ -51,10 +51,12 @@ public class SellFragment extends Fragment implements ProductListAdapter.OnProdu
     private HashMap<Integer, CartItem> cartItems = new HashMap<Integer, CartItem>();
     private AddCartItemDialogFragment.OnFinishListener onFinishListener = this;
     private CartItemViewModel cartItemViewModel;
+    private CartItemRepository cartRepository;
 
     private RecyclerView recyclerView;
 
     private final ProductListAdapter adapter = new ProductListAdapter(new ProductListAdapter.ProductDiff(), this, 2);
+  
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -109,6 +111,8 @@ public class SellFragment extends Fragment implements ProductListAdapter.OnProdu
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        cartRepository = new CartItemRepository(getActivity().getApplication());
+
         if (savedInstanceState != null) {
 
         }
@@ -166,7 +170,7 @@ public class SellFragment extends Fragment implements ProductListAdapter.OnProdu
             @Override
             public void onClick(View view) {
                 if (totalQty > 0) {
-                    CartItemRepository cartRepository = new CartItemRepository(getActivity().getApplication());
+                    
                     CartItem[] array = new CartItem[cartItems.size()];
                     cartItems.values().toArray(array);
                     cartRepository.deleteAll();
