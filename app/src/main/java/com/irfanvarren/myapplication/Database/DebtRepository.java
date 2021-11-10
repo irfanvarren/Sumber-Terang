@@ -23,6 +23,14 @@ public class DebtRepository {
     public LiveData<List<Debt>> getAll() {
         return mAllDebts;
     }
+
+    public Double getTotalDebt(){
+        return mDebtDao.getTotalDebt();
+    }
+
+    public Integer getTotalTransaction(){
+        return mDebtDao.getTotalTransaction();
+    }
     
     public long insert(Debt debt) {
         if (debt.getCreatedAt() == null) {

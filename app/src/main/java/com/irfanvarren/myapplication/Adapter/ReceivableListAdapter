@@ -1,5 +1,4 @@
 package com.irfanvarren.myapplication.Adapter;
-
 import android.app.Application;
 
 import android.content.Context;
@@ -18,14 +17,11 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-
-
-
 import com.google.gson.Gson;
 
-import com.irfanvarren.myapplication.Database.DistributorRepository;
-import com.irfanvarren.myapplication.Model.Distributor;
-import com.irfanvarren.myapplication.Model.Debt;
+import com.irfanvarren.myapplication.Database.CustomerRepository;
+import com.irfanvarren.myapplication.Model.Customer;
+import com.irfanvarren.myapplication.Model.Receivable;
 import com.irfanvarren.myapplication.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -36,28 +32,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class DebtListAdapter extends ListAdapter<Debt,DebtListAdapter.ViewHolder> {
+public class ReceivableListAdapter extends ListAdapter<Receivable,ReceivableListAdapter.ViewHolder> {
     private Context mContext;
-    private OnDebtListener mDebtListener;
+    private OnReceivableListener mReceivableListener;
     private Application mApplication;
 
 
-    public DebtListAdapter(DiffUtil.ItemCallback<Debt> diffCallback, OnDebtListener debtListener, Application application) {
+    public ReceivableListAdapter(DiffUtil.ItemCallback<Receivable> diffCallback, OnReceivableListener ReceivableListener, Application application) {
         super(diffCallback);
-        this.mDebtListener = debtListener;
+        this.mReceivableListener = ReceivableListener;
         this.mApplication = application;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private Context mContext;
         private View rootView;
-        private Debt mDebt;
+        private Receivable mReceivable;
         private TextView txtName,txtDueDate,txtStatus,txtAmount;
-        private OnDebtListener mDebtListener;
+        private OnReceivableListener mReceivableListener;
         private Application mApplication;
-        public ViewHolder(View view,OnDebtListener debtListener, Application application){
+        public ViewHolder(View view,OnReceivableListener ReceivableListener, Application application){
             super(view);
-            mDebtListener = debtListener;
+            mReceivableListener = ReceivableListener;
             mContext = view.getContext();
             mApplication = application;
             txtName = view.findViewById(R.id.name);
@@ -66,62 +62,55 @@ public class DebtListAdapter extends ListAdapter<Debt,DebtListAdapter.ViewHolder
             txtAmount = view.findViewById(R.id.amount);
             rootView = view;
         }
-        public void bind(Debt debt){
+        public void bind(Receivable Receivable){
             NumberFormat nf = NumberFormat.getNumberInstance(new Locale("in", "ID"));
-           Integer distributorId = debt.getDistributorId();
-            DistributorRepository dRepository = new DistributorRepository(mApplication);
-            Distributor distributor = dRepository.findById(distributorId);
-            txtName.setText(distributor.getName());
-            txtAmount.setText(nf.format(debt.getAmount()));
+           Integer customerId = Receivable.getCustomerId();
+            CustomerRepository dRepository = new CustomerRepository(mApplication);
+            Customer customer = dRepository.findById(customerId);
+            txtName.setText(customer.getName());
+            txtAmount.setText(nf.format(Receivable.getAmount()));
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
-            txtDueDate.setText(dateFormat.format(debt.getDueDate()));
-            if(debt.getStatus()){
+            txtDueDate.setText(dateFormat.format(Receivable.getDueDate()));
+            if(Receivable.getStatus()){
                 txtStatus.setText("Lunas");
             }else{
                 txtStatus.setText("Belum Lunas");
             }  
-
-            rootView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mDebtListener.DebtClick(getAdapterPosition(),mDebt);
-                }
-            });
         }
 
         @Override
         public void onClick(View view) {
-        mDebtListener.DebtClick(getAdapterPosition(),mDebt);
+        mReceivableListener.ReceivableClick(getAdapterPosition(),mReceivable);
         }
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.debts_list,parent,false);
-        return new ViewHolder(view,mDebtListener, mApplication);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.Receivables_list,parent,false);
+        return new ViewHolder(view,mReceivableListener, mApplication);
     }
 
     @Override
-    public void onBindViewHolder(DebtListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(ReceivableListAdapter.ViewHolder holder, int position) {
         holder.bind(getItem(position));
     }
 
-    public static class DebtDiff extends DiffUtil.ItemCallback<Debt> {
+    public static class ReceivableDiff extends DiffUtil.ItemCallback<Receivable> {
 
         @Override
-        public boolean areItemsTheSame(@NonNull Debt oldItem, @NonNull Debt newItem) {
+        public boolean areItemsTheSame(@NonNull Receivable oldItem, @NonNull Receivable newItem) {
             return oldItem == newItem;
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull Debt oldItem, @NonNull Debt newItem) {
+        public boolean areContentsTheSame(@NonNull Receivable oldItem, @NonNull Receivable newItem) {
             return oldItem.getId() == newItem.getId();
         }
     }
 
 
-    public interface OnDebtListener{
-        public void DebtClick(Integer position,Debt debt);
+    public interface OnReceivableListener{
+        public void ReceivableClick(Integer position,Receivable Receivable);
     }
 
 }

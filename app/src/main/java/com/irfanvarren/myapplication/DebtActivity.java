@@ -7,8 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator; 
 
+import android.content.Intent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,16 +45,36 @@ public class DebtActivity extends AppCompatActivity implements DebtListAdapter.O
         mDebtViewModel = new ViewModelProvider(this).get(DebtViewModel.class);
         mDebtsList = mDebtViewModel.getAll();
 
+        Double totalDebt = mDebtViewModel.getTotalDebt();
+        Integer totalTransaction = mDebtViewModel.getTotalTransaction();
+        
+        TextView txtTotalDebt = findViewById(R.id.totalDebt);
+        TextView txtTotalTransaction = findViewById(R.id.totalTransaction);
+        
+        txtTotalDebt.setText(String.valueOf(totalDebt));
+        txtTotalTransaction.setText(String.valueOf(totalTransaction));
 
         mDebtsList.observe(this, debts -> {
             mDebts = debts;
             adapter.submitList(debts);
         });
 
+        RelativeLayout addBtn = (RelativeLayout) findViewById(R.id.addBtn);
+
+
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {                
+                Intent intent = new Intent(DebtActivity.this, DebtInputActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     public void DebtClick(Integer position,Debt debt){
 
+        Intent intent = new Intent(DebtActivity.this, DebtDetailActivity.class);
+        startActivity(intent);
     }
 }

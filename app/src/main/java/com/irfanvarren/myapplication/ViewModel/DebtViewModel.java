@@ -24,5 +24,13 @@ public class DebtViewModel extends AndroidViewModel {
         return mRepository.getAll();
     }
 
+    public Double getTotalDebt(){
+        return mRepository.getTotalDebt();
+    }
+
+    public Integer getTotalTransaction(){
+        return mRepository.getTotalTransaction();
+    }
+
 
 }

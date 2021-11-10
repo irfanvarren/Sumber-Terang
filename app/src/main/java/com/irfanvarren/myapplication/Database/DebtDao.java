@@ -7,6 +7,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+import androidx.room.Transaction;
 
 import com.irfanvarren.myapplication.Model.Debt;
 
@@ -17,6 +18,14 @@ import java.util.List;
 public interface DebtDao {
     @Query("SELECT * from debts order by due_date DESC")
     LiveData<List<Debt>> getAll();
+
+    @Transaction
+    @Query("SELECT SUM(amount) from debts where status = 0")
+    double getTotalDebt();
+
+    @Transaction
+    @Query("SELECT COUNT(*) from debts where status = 0")
+    int getTotalTransaction();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Debt... debts);

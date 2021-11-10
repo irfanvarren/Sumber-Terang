@@ -19,6 +19,8 @@
         <activity android:name=".ReportActivity"></activity>
         <activity android:name=".ReceivableActivity" />
         <activity android:name=".DebtActivity" />
+        <activity android:name=".DebtDetailActivity" />
+         <activity android:name=".DebtInputActivity" />
         <activity android:name=".DebtAndReceivableActivity" />
         <activity
             android:name=".PaymentActivity"

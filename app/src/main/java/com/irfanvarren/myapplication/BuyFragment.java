@@ -50,6 +50,7 @@ public class BuyFragment extends Fragment implements ProductListAdapter.OnProduc
     private HashMap<Integer, CartItem> cartItems = new HashMap<Integer, CartItem>();
     private AddCartItemDialogFragment.OnFinishListener onFinishListener = this;
     private CartItemViewModel cartItemViewModel;
+    CartItemRepository cartRepository = new CartItemRepository(getActivity().getApplication());
 
     private RecyclerView recyclerView;
 
@@ -165,7 +166,7 @@ public class BuyFragment extends Fragment implements ProductListAdapter.OnProduc
             @Override
             public void onClick(View view) {
                 if (totalQty > 0) {
-                    CartItemRepository cartRepository = new CartItemRepository(getActivity().getApplication());
+                   
                     CartItem[] array = new CartItem[cartItems.size()];
                     cartItems.values().toArray(array);
                     cartRepository.deleteAll();
@@ -239,14 +240,17 @@ public class BuyFragment extends Fragment implements ProductListAdapter.OnProduc
             CartItem updateItem = cartItems.get(current.product.id);
             updateItem.setQty(intQty);
             cartItems.put(current.product.id, updateItem);
+            cartRepository.update(updateItem);
         } else {
             CartItem cartItem = new CartItem(1, current.product);
             cartItem.setQty(intQty);
             cartItems.put(current.product.id, cartItem);
+            cartRepository.insert(cartItem);
         }
 
         txtQty.setText(String.valueOf(intQty));
         txtTotal.setText(String.valueOf(totalQty));
+        
     }
 
     @Override
@@ -259,11 +263,15 @@ public class BuyFragment extends Fragment implements ProductListAdapter.OnProduc
 
             if (cartItems.containsKey(current.product.id)) {
                 if (intQty == 0) {
+                    cartRepository.delete(cartItems.get(current.product.id));
                     cartItems.remove(current.product.id);
+                    
                 } else {
+
                     CartItem updateItem = cartItems.get(current.product.id);
                     updateItem.setQty(intQty);
                     cartItems.put(current.product.id, updateItem);
+                    cartRepository.update(updateItem);
                 }
             }
             Log.d("CART_ITEMS", new Gson().toJson(cartItems));
@@ -280,11 +288,13 @@ public class BuyFragment extends Fragment implements ProductListAdapter.OnProduc
             updateItem.setQty(qty);
             updateItem.setPrice(price);
             cartItems.put(productId, updateItem);
+            cartRepository.update(updateItem);
         } else {
             CartItem cartItem = new CartItem(1, product);
             cartItem.setQty(qty);
             cartItem.setPrice(price);
             cartItems.put(productId, cartItem);
+            cartRepository.insert(cartItem);
         }
         ProductViewHolder viewHolder = (ProductViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
         View itemView = viewHolder.itemView;

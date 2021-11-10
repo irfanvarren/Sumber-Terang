@@ -6,11 +6,25 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+import androidx.room.Transaction;
 
+import androidx.lifecycle.LiveData;
 import com.irfanvarren.myapplication.Model.Receivable;
+
+import java.util.List;
 
 @Dao
 public interface ReceivableDao {
+    @Query("SELECT * from receivables order by due_date DESC")
+    LiveData<List<Receivable>> getAll();
+
+    @Transaction
+    @Query("SELECT SUM(amount) from receivables where status = 0")
+    double getTotalReceivable();
+
+    @Transaction
+    @Query("SELECT COUNT(*) from receivables where status = 0")
+    int getTotalTransaction();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Receivable... receivables);
