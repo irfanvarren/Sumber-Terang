@@ -70,7 +70,7 @@ public class PurchaseItemListAdapter extends ListAdapter<CartItem,PurchaseItemLi
 
             int qty = cartItem.getQty();
             Double price = cartItem.getPrice();
-            String desc = String.valueOf(qty) + " x " + "Rp. " + nf.format(price) + " = Rp.     "+ nf.format(qty*price);
+            String desc = String.valueOf(qty) + " x " + "Rp. " + nf.format(price) + " = Rp. "+ nf.format(qty*price);
             txtCartItemDesc.setText(desc);
 
 

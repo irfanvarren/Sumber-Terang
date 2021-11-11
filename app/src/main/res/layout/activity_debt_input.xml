@@ -23,13 +23,13 @@
 
         
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:hint="Nominal"
             app:prefixText="Rp. ">
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal" 
@@ -42,17 +42,33 @@
         android:layout_marginBottom="8dp"
         android:text="Distributor"/>
 
-        
-        <com.google.android.material.textfield.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="Distributor">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/supplierId"
+            android:orientation="horizontal">
+        
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"    
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"
+                android:hint="Distributor">
+                <AutoCompleteTextView
+                    android:id="@+id/distributorId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <ImageButton
+            android:id="@+id/addDistributorBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@null"
+            app:srcCompat="@drawable/ic_baseline_add_24" />
+        </LinearLayout>
 
         <TextView
         android:layout_width="match_parent"
@@ -83,12 +99,12 @@
 
         
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:hint="Keterangan">
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/note"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>

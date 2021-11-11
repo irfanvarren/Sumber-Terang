@@ -368,6 +368,7 @@ public class PaymentFragment extends Fragment {
                         Payment payment = new Payment();
                         payment.setPurchaseId(mPurchaseId);
                         payment.setInvoiceNo(invoiceNo);
+                        payment.setPaymentDate(mTransactionDate);
                         //payment.setPaymentNo(paymentNO);
                         payment.setAmount(amountPaid);
                         PaymentRepository paymentRepository = new PaymentRepository(getActivity().getApplication());
@@ -473,6 +474,7 @@ public class PaymentFragment extends Fragment {
                         Payment payment = new Payment();
                         payment.setOrderId(mOrderId);
                         payment.setInvoiceNo(invoiceNo);
+                        payment.setPaymentDate(mTransactionDate);
                         //payment.setPaymentNo(paymentNO);
                         payment.setAmount(amountPaid);
                         PaymentRepository paymentRepository = new PaymentRepository(getActivity().getApplication());

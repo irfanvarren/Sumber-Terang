@@ -37,6 +37,10 @@ public class Payment {
     @ColumnInfo(name="note")
     public String note;
 
+    @ColumnInfo(name="payment_date",defaultValue = "CURRENT_TIMESTAMP")
+    @TypeConverters(DateConverter.class)
+    public Date paymentDate;
+
     @ColumnInfo(name = "created_at",defaultValue = "CURRENT_TIMESTAMP")
     @TypeConverters(DateConverter.class)
     public Date createdAt;
@@ -118,6 +122,15 @@ public class Payment {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    
+    public Date getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(Date paymentDate) {
+        this.paymentDate = paymentDate;
     }
 
     public Date getCreatedAt() {

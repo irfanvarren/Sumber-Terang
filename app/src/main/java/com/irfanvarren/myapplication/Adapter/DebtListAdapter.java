@@ -69,7 +69,10 @@ public class DebtListAdapter extends ListAdapter<Debt,DebtListAdapter.ViewHolder
         public void bind(Debt debt){
             mDebt = debt;
             NumberFormat nf = NumberFormat.getNumberInstance(new Locale("in", "ID"));
-           Integer distributorId = debt.getDistributorId();
+            Integer distributorId = debt.getDistributorId();
+            if(distributorId == null){
+                distributorId = 0;
+            }
             DistributorRepository dRepository = new DistributorRepository(mApplication);
             Distributor distributor = dRepository.findById(distributorId);
             if(distributor != null){

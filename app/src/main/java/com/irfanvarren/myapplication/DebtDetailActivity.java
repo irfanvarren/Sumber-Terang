@@ -43,25 +43,31 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 
 public class DebtDetailActivity extends AppCompatActivity {
     Debt mDebt;
+    
+    Double amountPaid = new Double(0);
+    Double remainingAmount = new Double(0);
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debt_detail);
-
-      
-
+        
+        
+        
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         RelativeLayout payBtn = (RelativeLayout) findViewById(R.id.payBtn);
         TextView txtName = (TextView) findViewById(R.id.distributorName);
         TextView txtStatus = (TextView) findViewById(R.id.status);
         TextView txtTransactionDate = (TextView) findViewById(R.id.transactionDate);
         TextView txtDueDate = (TextView) findViewById(R.id.dueDate);
-        TextView amount = (TextView) findViewById(R.id.amount);
-        TextView remainingAmount = (TextView) findViewById(R.id.remainingAmount);
-
+        TextView txtAmount = (TextView) findViewById(R.id.amount);
+        TextView txtRemainingAmount = (TextView) findViewById(R.id.remainingAmount);
+        
+        
+        
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
         NumberFormat nf = NumberFormat.getNumberInstance(new Locale("in", "ID"));
-
+        
         if(getIntent().getExtras() != null){
             mDebt = (Debt) getIntent().getSerializableExtra("debt");
             Log.d("DEBT",new Gson().toJson(mDebt));
@@ -79,25 +85,30 @@ public class DebtDetailActivity extends AppCompatActivity {
                 }
                 txtTransactionDate.setText(dateFormat.format(mDebt.getCreatedAt()));
                 txtDueDate.setText(dateFormat.format(mDebt.getDueDate()));
-                amount.setText("Rp. "+ nf.format(mDebt.getAmount()));
-
-                Double amountPaid = new Double(0);
+                txtAmount.setText("Rp. "+ nf.format(mDebt.getAmount()));
+                
+                
                 if(mDebt.getAmountPaid() != null){
                     amountPaid = mDebt.getAmountPaid();
                 }
-                remainingAmount.setText("Rp. " + nf.format(mDebt.getAmount() - amountPaid));
+                
+                remainingAmount = mDebt.getAmount() - amountPaid;
+                txtRemainingAmount.setText("Rp. " + nf.format(remainingAmount));
             }
         }
         payBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DebtDetailActivity.this, DebtPaymentActivity.class);
+                intent.putExtra("name",txtName.getText().toString());
+                intent.putExtra("remainingAmount",remainingAmount);
+                intent.putExtra("debt",mDebt);
                 startActivity(intent);
             }
         });
     }
-
     
-
-
+    
+    
+    
 }

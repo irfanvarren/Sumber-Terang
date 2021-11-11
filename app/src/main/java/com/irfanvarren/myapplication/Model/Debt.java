@@ -31,7 +31,7 @@ public class Debt implements Serializable {
     @ColumnInfo(name = "note")
     public String note;
 
-    @ColumnInfo(name = "status",defaultValue = "false")
+    @ColumnInfo(name = "status",defaultValue = "0")
     public Boolean status;
 
     @ColumnInfo(name="created_at",defaultValue="CURRENT_TIMESTAMP")

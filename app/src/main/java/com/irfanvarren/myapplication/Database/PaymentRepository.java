@@ -19,6 +19,11 @@ public class PaymentRepository {
         if (payment.getCreatedAt() == null) {
             payment.setCreatedAt(new Date());
         }
+
+        if(payment.getPaymentDate() == null){
+            payment.setPaymentDate(new Date());
+        }
+        
         payment.setUpdatedAt(new Date());
         long id = db.paymentDao().insert(payment);
         return id;

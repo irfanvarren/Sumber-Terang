@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "8dd9888f7108eebf019e50277a20ef32",
+    "identityHash": "741b803e8dd13c918e18f03617eb2190",
     "entities": [
       {
         "tableName": "products",
@@ -762,7 +762,7 @@
       },
       {
         "tableName": "debts",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `purchase_id` INTEGER, `distributor_id` INTEGER, `amount` REAL DEFAULT 0, `amount_paid` REAL DEFAULT 0, `due_date` INTEGER, `note` TEXT, `status` INTEGER DEFAULT false, `created_at` INTEGER DEFAULT CURRENT_TIMESTAMP, `updated_at` INTEGER DEFAULT CURRENT_TIMESTAMP)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `purchase_id` INTEGER, `distributor_id` INTEGER, `amount` REAL DEFAULT 0, `amount_paid` REAL DEFAULT 0, `due_date` INTEGER, `note` TEXT, `status` INTEGER DEFAULT 0, `created_at` INTEGER DEFAULT CURRENT_TIMESTAMP, `updated_at` INTEGER DEFAULT CURRENT_TIMESTAMP)",
         "fields": [
           {
             "fieldPath": "id",
@@ -813,7 +813,7 @@
             "columnName": "status",
             "affinity": "INTEGER",
             "notNull": false,
-            "defaultValue": "false"
+            "defaultValue": "0"
           },
           {
             "fieldPath": "createdAt",
@@ -920,7 +920,7 @@
       },
       {
         "tableName": "payments",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `purchase_id` INTEGER, `order_id` INTEGER, `debt_id` INTEGER, `receivable_id` INTEGER, `invoice_no` TEXT, `payment_no` TEXT, `amount` REAL, `note` TEXT, `created_at` INTEGER DEFAULT CURRENT_TIMESTAMP, `updated_at` INTEGER DEFAULT CURRENT_TIMESTAMP)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `purchase_id` INTEGER, `order_id` INTEGER, `debt_id` INTEGER, `receivable_id` INTEGER, `invoice_no` TEXT, `payment_no` TEXT, `amount` REAL, `note` TEXT, `payment_date` INTEGER DEFAULT CURRENT_TIMESTAMP, `created_at` INTEGER DEFAULT CURRENT_TIMESTAMP, `updated_at` INTEGER DEFAULT CURRENT_TIMESTAMP)",
         "fields": [
           {
             "fieldPath": "id",
@@ -975,6 +975,13 @@
             "columnName": "note",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "paymentDate",
+            "columnName": "payment_date",
+            "affinity": "INTEGER",
+            "notNull": false,
+            "defaultValue": "CURRENT_TIMESTAMP"
           },
           {
             "fieldPath": "createdAt",
@@ -1068,7 +1075,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8dd9888f7108eebf019e50277a20ef32')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '741b803e8dd13c918e18f03617eb2190')"
     ]
   }
 }

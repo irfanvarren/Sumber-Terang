@@ -23,13 +23,13 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nama Produk"
+            android:text="-"
             android:textStyle="bold"/>
             <TextView
             android:id="@+id/dueDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="JT: 2021/10/01"/>
+            android:text="JT: -"/>
             
         </LinearLayout>
         <LinearLayout
