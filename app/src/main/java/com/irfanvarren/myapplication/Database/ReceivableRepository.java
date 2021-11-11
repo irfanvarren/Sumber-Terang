@@ -24,11 +24,11 @@ public class ReceivableRepository {
         return mAllReceivables;
     }
 
-    public Double getTotalReceivable(){
+    public LiveData<Double> getTotalReceivable(){
         return mReceivableDao.getTotalReceivable();
     }
 
-    public Integer getTotalTransaction(){
+    public LiveData<Integer> getTotalTransaction(){
         return mReceivableDao.getTotalTransaction();
     }
 

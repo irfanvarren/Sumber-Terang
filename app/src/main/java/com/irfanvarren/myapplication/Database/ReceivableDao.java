@@ -15,16 +15,16 @@ import java.util.List;
 
 @Dao
 public interface ReceivableDao {
-    @Query("SELECT * from receivables order by due_date DESC")
+    @Query("SELECT * from receivables where status = 0 order by due_date DESC")
     LiveData<List<Receivable>> getAll();
 
     @Transaction
     @Query("SELECT SUM(amount) from receivables where status = 0")
-    double getTotalReceivable();
+    LiveData<Double> getTotalReceivable();
 
     @Transaction
     @Query("SELECT COUNT(*) from receivables where status = 0")
-    int getTotalTransaction();
+    LiveData<Integer> getTotalTransaction();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Receivable... receivables);

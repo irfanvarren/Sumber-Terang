@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.irfanvarren.myapplication.Adapter.ReceivableListAdapter;
@@ -21,6 +22,8 @@ import com.irfanvarren.myapplication.Model.Receivable;
 import com.irfanvarren.myapplication.ViewModel.ReceivableViewModel;
 
 import java.util.List;
+import java.util.Locale;
+import java.text.NumberFormat;
 
 import android.os.Bundle;
 
@@ -35,6 +38,8 @@ public class ReceivableActivity extends AppCompatActivity implements ReceivableL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receivable);
 
+        NumberFormat nf = NumberFormat.getNumberInstance(new Locale("in", "ID"));
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         recyclerView.setItemAnimator(null);
@@ -44,15 +49,16 @@ public class ReceivableActivity extends AppCompatActivity implements ReceivableL
         recyclerView.setLayoutManager(layoutManager);
         mReceivableViewModel = new ViewModelProvider(this).get(ReceivableViewModel.class);
         mReceivablesList = mReceivableViewModel.getAll();
-
-        Double totalReceivable = mReceivableViewModel.getTotalReceivable();
-        Integer totalTransaction = mReceivableViewModel.getTotalTransaction();
         
         TextView txtTotalReceivable = findViewById(R.id.totalReceivable);
         TextView txtTotalTransaction = findViewById(R.id.totalTransaction);
-        
-        txtTotalReceivable.setText(String.valueOf(totalReceivable));
-        txtTotalTransaction.setText(String.valueOf(totalTransaction));
+
+        mReceivableViewModel.getTotalReceivable().observe(this, totalReceivable -> {
+            txtTotalReceivable.setText(nf.format(totalReceivable));
+        });
+        mReceivableViewModel.getTotalTransaction().observe(this, totalTransaction -> {
+            txtTotalTransaction.setText(String.valueOf(totalTransaction));
+        });
 
         mReceivablesList.observe(this, receivables -> {
             mReceivables = receivables;
@@ -73,8 +79,9 @@ public class ReceivableActivity extends AppCompatActivity implements ReceivableL
 
     @Override
     public void ReceivableClick(Integer position,Receivable receivable){
-
+        Log.d("RECEIVABLE",new Gson().toJson(receivable));
         Intent intent = new Intent(ReceivableActivity.this, ReceivableDetailActivity.class);
+        intent.putExtra("receivable", receivable);
         startActivity(intent);
     }
 }

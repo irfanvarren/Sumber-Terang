@@ -19,16 +19,17 @@ public class DebtViewModel extends AndroidViewModel {
         mRepository = new DebtRepository(application);
 
     }
+    
 
     public LiveData<List<Debt>> getAll(){
         return mRepository.getAll();
     }
 
-    public Double getTotalDebt(){
+    public LiveData<Double> getTotalDebt(){
         return mRepository.getTotalDebt();
     }
 
-    public Integer getTotalTransaction(){
+    public LiveData<Integer> getTotalTransaction(){
         return mRepository.getTotalTransaction();
     }
 

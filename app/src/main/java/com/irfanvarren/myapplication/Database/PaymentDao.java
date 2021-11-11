@@ -19,6 +19,9 @@ public interface PaymentDao {
     @Query("SELECT id FROM payments ORDER BY id DESC LIMIT 1 ")
     Integer getNo();
 
+    @Query("SELECT SUM(amount) FROM payments where debt_id = :id")
+    Double getDebtAmountPaidTotal(Integer id);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Payment... payments);
 

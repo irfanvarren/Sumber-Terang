@@ -33,6 +33,7 @@ import com.irfanvarren.myapplication.Model.DateConverter;
 import com.irfanvarren.myapplication.Model.Payment;
 
 import com.irfanvarren.myapplication.Database.PaymentRepository;
+import com.irfanvarren.myapplication.Database.DebtRepository;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -50,7 +51,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
 public class DebtPaymentActivity extends AppCompatActivity {
-    
+    private Integer REQUEST_CODE = 1;
     private MaterialDatePicker mPaymentDatePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Select Date").build();
     private Date mPaymentDate = new Date();
     private  Double remainingAmount = new Double(0);
@@ -167,7 +168,24 @@ public class DebtPaymentActivity extends AppCompatActivity {
                 PaymentRepository paymentRepository = new PaymentRepository(getApplication());
                 paymentRepository.insert(payment);
 
+                if(mDebt != null){
+                    Double amountPaid = new Double(0);
+                    if(paymentRepository.getDebtAmountPaidTotal(mDebt.getId()) != null){
+                        amountPaid = paymentRepository.getDebtAmountPaidTotal(mDebt.getId());
+                    }
+                   
+                    DebtRepository debtRepository = new DebtRepository(getApplication());
+                    mDebt.setAmountPaid(amountPaid);
+                    if(amountPaid >= mDebt.getAmount()){
+                        mDebt.setStatus(true);
+                    }
+                    Log.d("AMOUNT_PAID",String.valueOf(amountPaid));
+                    Log.d("DEBT_PAYMENT",new Gson().toJson(mDebt));
+                    debtRepository.update(mDebt);
+                }
+
                 Toast.makeText(getApplicationContext(), "Data berhasil disimpan", Toast.LENGTH_LONG).show();
+                setResult(REQUEST_CODE);
                 DebtPaymentActivity.this.finish();
             }
         });

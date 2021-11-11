@@ -67,14 +67,20 @@ public class ReceivableListAdapter extends ListAdapter<Receivable,ReceivableList
             rootView = view;
         }
         public void bind(Receivable receivable){
+            mReceivable = receivable;
             NumberFormat nf = NumberFormat.getNumberInstance(new Locale("in", "ID"));
-           Integer customerId = receivable.getCustomerId();
+            Integer customerId = receivable.getCustomerId();
+            if(customerId == null){
+                customerId = 0;
+            }
             CustomerRepository dRepository = new CustomerRepository(mApplication);
             Customer customer = dRepository.findById(customerId);
-            txtName.setText(customer.getName());
+            if(customer != null){
+                txtName.setText(customer.getName());
+            }
             txtAmount.setText(nf.format(receivable.getAmount()));
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
-            txtDueDate.setText(dateFormat.format(receivable.getDueDate()));
+            txtDueDate.setText("JT: "+dateFormat.format(receivable.getDueDate()));
             if(receivable.getStatus()){
                 txtStatus.setText("Lunas");
             }else{

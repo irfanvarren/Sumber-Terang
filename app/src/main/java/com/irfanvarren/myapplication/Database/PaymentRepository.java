@@ -15,6 +15,10 @@ public class PaymentRepository {
         mPaymentDao = db.paymentDao();
     }
 
+    public Double getDebtAmountPaidTotal(Integer id){
+        return mPaymentDao.getDebtAmountPaidTotal(id);
+    }
+
     public long insert(Payment payment) {
         if (payment.getCreatedAt() == null) {
             payment.setCreatedAt(new Date());

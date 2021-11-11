@@ -22,6 +22,8 @@ import com.irfanvarren.myapplication.Model.Debt;
 import com.irfanvarren.myapplication.ViewModel.DebtViewModel;
 
 import java.util.List;
+import java.util.Locale;
+import java.text.NumberFormat;
 
 import android.os.Bundle;
 
@@ -36,6 +38,8 @@ public class DebtActivity extends AppCompatActivity implements DebtListAdapter.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debt);
 
+        NumberFormat nf = NumberFormat.getNumberInstance(new Locale("in", "ID"));
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         recyclerView.setItemAnimator(null);
@@ -45,16 +49,23 @@ public class DebtActivity extends AppCompatActivity implements DebtListAdapter.O
         recyclerView.setLayoutManager(layoutManager);
         mDebtViewModel = new ViewModelProvider(this).get(DebtViewModel.class);
         mDebtsList = mDebtViewModel.getAll();
-
-        Double totalDebt = mDebtViewModel.getTotalDebt();
-        Integer totalTransaction = mDebtViewModel.getTotalTransaction();
         
         TextView txtTotalDebt = findViewById(R.id.totalDebt);
         TextView txtTotalTransaction = findViewById(R.id.totalTransaction);
-        
-        txtTotalDebt.setText(String.valueOf(totalDebt));
-        txtTotalTransaction.setText(String.valueOf(totalTransaction));
 
+        mDebtViewModel.getTotalDebt().observe(this, totalDebt -> {
+            if(totalDebt == null){
+                totalDebt = new Double(0);
+            }
+            txtTotalDebt.setText("Rp. " + nf.format(totalDebt));
+        });
+        mDebtViewModel.getTotalTransaction().observe(this, totalTransaction -> {
+            if(totalTransaction == null){
+                totalTransaction = 0;
+            }
+            txtTotalTransaction.setText(String.valueOf(totalTransaction));
+        });
+        
         mDebtsList.observe(this, debts -> {
             mDebts = debts;
             adapter.submitList(debts);
@@ -74,9 +85,9 @@ public class DebtActivity extends AppCompatActivity implements DebtListAdapter.O
 
     @Override
     public void DebtClick(Integer position,Debt debt){
-        Log.d("DEBT",new Gson().toJson(debt));
         Intent intent = new Intent(DebtActivity.this, DebtDetailActivity.class);
         intent.putExtra("debt", debt);
         startActivity(intent);
     }
+
 }

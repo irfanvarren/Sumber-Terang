@@ -17,18 +17,18 @@ public class DebtRepository {
     public DebtRepository(Application application) {
         db = AppDatabase.getDatabase(application);
         mDebtDao = db.debtDao();
-        mAllDebts = mDebtDao.getAll();
+        mAllDebts = mDebtDao.getAllActive();
     }
     
     public LiveData<List<Debt>> getAll() {
         return mAllDebts;
     }
 
-    public Double getTotalDebt(){
+    public LiveData<Double> getTotalDebt(){
         return mDebtDao.getTotalDebt();
     }
 
-    public Integer getTotalTransaction(){
+    public LiveData<Integer> getTotalTransaction(){
         return mDebtDao.getTotalTransaction();
     }
     

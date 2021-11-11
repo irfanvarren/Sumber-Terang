@@ -64,7 +64,7 @@
                 <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hutang"
+                android:text="Piutang"
                 />
                 <TextView
                 android:id="@+id/totalReceivable"
@@ -83,12 +83,16 @@
                 <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:layout_gravity="end"
                 android:text="Total Transaksi"
                 />
                 <TextView
                 android:id="@+id/totalTransaction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:layout_gravity="end"
                 android:text="0"
                 />
            </LinearLayout>
@@ -123,7 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
-            android:text="Tambah Hutang"
+            android:text="Tambah Piutang"
             android:textAlignment="center"
             android:textSize="14sp"
             android:gravity="center"

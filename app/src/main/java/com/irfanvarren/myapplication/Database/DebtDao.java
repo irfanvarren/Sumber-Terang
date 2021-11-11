@@ -16,16 +16,16 @@ import java.util.List;
 
 @Dao
 public interface DebtDao {
-    @Query("SELECT * from debts order by due_date DESC")
-    LiveData<List<Debt>> getAll();
+    @Query("SELECT * from debts where status = 0 order by due_date DESC")
+    LiveData<List<Debt>> getAllActive();
 
     @Transaction
     @Query("SELECT SUM(amount) from debts where status = 0")
-    double getTotalDebt();
+    LiveData<Double> getTotalDebt();
 
     @Transaction
     @Query("SELECT COUNT(*) from debts where status = 0")
-    int getTotalTransaction();
+    LiveData<Integer> getTotalTransaction();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Debt... debts);

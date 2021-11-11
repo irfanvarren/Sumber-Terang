@@ -24,11 +24,11 @@ public class ReceivableViewModel extends AndroidViewModel {
         return mRepository.getAll();
     }
 
-    public Double getTotalReceivable(){
+    public LiveData<Double> getTotalReceivable(){
         return mRepository.getTotalReceivable();
     }
 
-    public Integer getTotalTransaction(){
+    public LiveData<Integer> getTotalTransaction(){
         return mRepository.getTotalTransaction();
     }
 

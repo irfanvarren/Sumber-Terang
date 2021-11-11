@@ -42,10 +42,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
 public class DebtDetailActivity extends AppCompatActivity {
-    Debt mDebt;
-    
-    Double amountPaid = new Double(0);
-    Double remainingAmount = new Double(0);
+    private Debt mDebt;
+    private Double amountPaid = new Double(0);
+    private Double remainingAmount = new Double(0);
+    private Integer REQUEST_CODE = 1;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,9 +103,17 @@ public class DebtDetailActivity extends AppCompatActivity {
                 intent.putExtra("name",txtName.getText().toString());
                 intent.putExtra("remainingAmount",remainingAmount);
                 intent.putExtra("debt",mDebt);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
+      
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (resultCode == REQUEST_CODE) {
+                this.finish();
+            }
     }
     
     
