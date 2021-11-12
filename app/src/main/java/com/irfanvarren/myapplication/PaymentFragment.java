@@ -488,6 +488,7 @@ public class PaymentFragment extends Fragment {
                             return;
                         }
                         Receivable receivable = new Receivable();
+                        receivable.setCustomerId(mCustomerId);
                         receivable.setOrderId(mOrderId);
                         receivable.setAmount(mSubtotal - amountPaid);
                         receivable.setDueDate(mDueDate);
