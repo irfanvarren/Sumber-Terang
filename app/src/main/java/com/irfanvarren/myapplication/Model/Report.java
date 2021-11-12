@@ -26,7 +26,8 @@ public class Report {
     public Double totalPurchase;
 
     @ColumnInfo(name = "transaction_date")
-    public String transactionDate;
+    @TypeConverters({DateConverter.class})
+    public Date transactionDate;
 
        
     public void setTotalTransaction(Integer totalTransaction) {
@@ -56,11 +57,11 @@ public class Report {
     }
 
 
-    public String getTransactionDate() {
+    public Date getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(String transactionDate) {
+    public void setTransactionDate(Date transactionDate) {
         this.transactionDate = transactionDate;
     }
 

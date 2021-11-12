@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
+import android.widget.TextView;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -26,20 +27,23 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
 import java.text.SimpleDateFormat;
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
-
+import java.util.Locale;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
 public class ReportActivity extends AppCompatActivity implements ReportListAdapter.OnReportListener  {
+
     private AutoCompleteTextView mTxtDurationType;
-    private String durationType;
+    private String mDurationType = "Bulan Ini";
     private MaterialDatePicker mStartDatePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Select Date").build();
     private MaterialDatePicker mEndDatePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Select Date").build();
     private Date mStartDate = new Date(), mEndDate = new Date();
+    private Double mTotalIncome = 0.0, mTotalExpense = 0.0;
 
     private ReportViewModel mReportViewModel;
     private LiveData<List<Report>> mReportList;
@@ -54,6 +58,11 @@ public class ReportActivity extends AppCompatActivity implements ReportListAdapt
         LinearLayout customDateWrapper = (LinearLayout) findViewById(R.id.customDateWrapper);
         EditText startDate = (EditText) findViewById(R.id.startDate);
         EditText endDate = (EditText) findViewById(R.id.endDate);
+        TextView txtTotalIncome = (TextView) findViewById(R.id.totalIncome);
+        TextView txtTotalExpense = (TextView) findViewById(R.id.totalExpense);
+        TextView txtNetProfit = (TextView) findViewById(R.id.netProfit);
+
+        NumberFormat nf = NumberFormat.getNumberInstance(new Locale("in", "ID"));
         mTxtDurationType = findViewById(R.id.txtDurationType);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -66,8 +75,17 @@ public class ReportActivity extends AppCompatActivity implements ReportListAdapt
         mReportViewModel = new ViewModelProvider(this).get(ReportViewModel.class);
         mReportList = mReportViewModel.getThisMonth();
         mReportList.observe(this, report -> {
-            Log.d("REPORT",new Gson().toJson(report));
             adapter.submitList(report);
+        });
+
+        mReportViewModel.getTotalIncome(mDurationType).observe(this, totalIncome -> {
+            mTotalIncome = totalIncome;
+            txtTotalIncome.setText("Rp. " + nf.format(totalIncome));
+        });
+
+        mReportViewModel.getTotalExpense(mDurationType).observe(this, totalExpense -> {
+            mTotalExpense = totalExpense;
+            txtTotalExpense.setText("Rp. " + nf.format(totalExpense));
         });
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -78,11 +96,11 @@ public class ReportActivity extends AppCompatActivity implements ReportListAdapt
         mTxtDurationType.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                durationType =  adapterView.getItemAtPosition(i).toString();
-                if(durationType.equals("Bulan Ini")) {
+                mDurationType =  adapterView.getItemAtPosition(i).toString();
+                if(mDurationType.equals("Bulan Ini")) {
                    
                    
-                }else if(durationType.equals("Pilih Tanggal")){
+                }else if(mDurationType.equals("Pilih Tanggal")){
                     Toast.makeText(getApplicationContext(),"Fitur ini masih belum tersedia",Toast.LENGTH_SHORT).show();
                     //customDateWrapper.setVisibility(View.VISIBLE);                  
                     //Toast.makeText(getApplicationContext(),"show hidden select date",Toast.LENGTH_SHORT).show();

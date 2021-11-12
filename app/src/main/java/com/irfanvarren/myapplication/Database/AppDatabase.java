@@ -46,7 +46,7 @@ import java.util.concurrent.Executors;
                 Payment.class,
                 OtherCost.class,
                 Report.class
-        },
+        }, 
         version = 1,
         exportSchema = true
 )

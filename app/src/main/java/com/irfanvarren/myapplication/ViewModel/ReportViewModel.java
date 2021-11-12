@@ -25,4 +25,12 @@ public class ReportViewModel extends AndroidViewModel {
     }
 
 
+    public LiveData<Double> getTotalIncome(String durationType){
+        return mRepository.getTotalIncome(durationType);
+    }
+    public LiveData<Double> getTotalExpense(String durationType){
+        return mRepository.getTotalExpense(durationType);
+    }
+
+
 }

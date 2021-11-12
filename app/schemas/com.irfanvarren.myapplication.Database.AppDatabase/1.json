@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "741b803e8dd13c918e18f03617eb2190",
+    "identityHash": "3decdc02ffbe168608dbb409e8019af2",
     "entities": [
       {
         "tableName": "products",
@@ -1029,7 +1029,7 @@
       },
       {
         "tableName": "Report",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `total_transaction` INTEGER, `total_sell` REAL, `total_purchase` REAL, `transaction_date` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `total_transaction` INTEGER, `total_sell` REAL, `total_purchase` REAL, `transaction_date` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -1058,7 +1058,7 @@
           {
             "fieldPath": "transactionDate",
             "columnName": "transaction_date",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": false
           }
         ],
@@ -1075,7 +1075,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '741b803e8dd13c918e18f03617eb2190')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3decdc02ffbe168608dbb409e8019af2')"
     ]
   }
 }
