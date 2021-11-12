@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -22,6 +24,7 @@ import com.irfanvarren.myapplication.Model.Debt;
 import com.irfanvarren.myapplication.ViewModel.DebtViewModel;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.text.NumberFormat;
 
@@ -37,6 +40,9 @@ public class DebtActivity extends AppCompatActivity implements DebtListAdapter.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debt);
+        
+        List<Integer> status = new ArrayList<Integer>();
+        status.clear();
 
         NumberFormat nf = NumberFormat.getNumberInstance(new Locale("in", "ID"));
 
@@ -48,10 +54,82 @@ public class DebtActivity extends AppCompatActivity implements DebtListAdapter.O
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         mDebtViewModel = new ViewModelProvider(this).get(DebtViewModel.class);
-        mDebtsList = mDebtViewModel.getAll();
         
-        TextView txtTotalDebt = findViewById(R.id.totalDebt);
-        TextView txtTotalTransaction = findViewById(R.id.totalTransaction);
+        TextView txtTotalDebt = (TextView) findViewById(R.id.totalDebt);
+        TextView txtTotalTransaction = (TextView) findViewById(R.id.totalTransaction);
+        CheckBox ckUnpaid = (CheckBox) findViewById(R.id.ckUnpaid);
+        CheckBox ckPaid = (CheckBox) findViewById(R.id.ckPaid);
+
+        if(ckUnpaid.isChecked()){
+            status.add(0);
+        }
+
+        if(ckPaid.isChecked()){
+            status.add(1);
+        }
+
+        mDebtsList = mDebtViewModel.getAll(status);
+
+        mDebtsList.observe(this, debts -> {
+            mDebts = debts;
+            adapter.submitList(debts);
+        });
+       
+        
+        ckUnpaid.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+             if(b){
+                 if(!status.contains((Integer) 0)){
+                     status.add((Integer) 0);
+                 }
+                mDebtsList = mDebtViewModel.getAll(status);
+                mDebtsList.observe(DebtActivity.this, debts -> {
+                    mDebts = debts;
+                    adapter.submitList(mDebts);
+                    adapter.notifyDataSetChanged();
+                });
+            }else{
+                if(status.contains((Integer) 0)){
+                    status.remove((Integer) 0);
+                }
+                mDebtsList = mDebtViewModel.getAll(status);
+                mDebtsList.observe(DebtActivity.this, debts -> {
+                    mDebts = debts;
+                    adapter.submitList(mDebts);
+                    adapter.notifyDataSetChanged();
+                });
+            }
+            }
+        });
+
+        ckPaid.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    if(!status.contains((Integer) 1)){
+                        status.add((Integer) 1);
+                    }
+                   mDebtsList = mDebtViewModel.getAll(status);
+                   mDebtsList.observe(DebtActivity.this, debts -> {
+                       mDebts = debts;
+                       adapter.submitList(mDebts);
+                       adapter.notifyDataSetChanged();
+                   });
+               }else{
+                   if(status.contains((Integer) 1)){
+                       status.remove((Integer) 1);
+                   }
+                   mDebtsList = mDebtViewModel.getAll(status);
+                   mDebtsList.observe(DebtActivity.this, debts -> {
+                       mDebts = debts;
+                       adapter.submitList(mDebts);
+                       adapter.notifyDataSetChanged();
+                   });
+               }
+            }
+        });
+        
 
         mDebtViewModel.getTotalDebt().observe(this, totalDebt -> {
             if(totalDebt == null){
@@ -66,10 +144,7 @@ public class DebtActivity extends AppCompatActivity implements DebtListAdapter.O
             txtTotalTransaction.setText(String.valueOf(totalTransaction));
         });
         
-        mDebtsList.observe(this, debts -> {
-            mDebts = debts;
-            adapter.submitList(debts);
-        });
+  
 
         RelativeLayout addBtn = (RelativeLayout) findViewById(R.id.addBtn);
 

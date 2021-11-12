@@ -53,6 +53,7 @@
         </LinearLayout>
         <View style="@style/Divider"/>
         <RelativeLayout
+        android:id="@+id/amountWrapper"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:padding="15dp">

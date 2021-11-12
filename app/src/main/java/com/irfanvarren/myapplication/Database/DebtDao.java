@@ -16,11 +16,11 @@ import java.util.List;
 
 @Dao
 public interface DebtDao {
-    @Query("SELECT * from debts where status = 0 order by due_date DESC")
-    LiveData<List<Debt>> getAllActive();
+    @Query("SELECT * from debts where status IN (:status) order by status, due_date DESC")
+    LiveData<List<Debt>> getAllWithStatus(List<Integer> status);
 
     @Transaction
-    @Query("SELECT SUM(amount) from debts where status = 0")
+    @Query("SELECT (SUM(amount) - COALESCE((SELECT SUM(amount) FROM payments where payments.debt_id = debts.id),0)) as total  from debts where status = 0")
     LiveData<Double> getTotalDebt();
 
     @Transaction

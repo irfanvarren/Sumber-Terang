@@ -20,13 +20,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.EditText;
 
-import com.irfanvarren.myapplication.Adapter.ReportListAdapter;
+import com.irfanvarren.myapplication.Adapter.PaymentListAdapter;
 import com.irfanvarren.myapplication.Database.DistributorRepository;
 import com.irfanvarren.myapplication.Model.Distributor;
 import com.irfanvarren.myapplication.Model.Report;
 import com.irfanvarren.myapplication.Model.Debt;
+import com.irfanvarren.myapplication.Model.Payment;
 import com.irfanvarren.myapplication.Model.DateConverter;
-import com.irfanvarren.myapplication.ViewModel.ReportViewModel;
+import com.irfanvarren.myapplication.ViewModel.PaymentViewModel;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -41,12 +42,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
-public class DebtDetailActivity extends AppCompatActivity {
+public class DebtDetailActivity extends AppCompatActivity implements PaymentListAdapter.OnPaymentListener {
     private Debt mDebt;
     private Double amountPaid = new Double(0);
     private Double remainingAmount = new Double(0);
     private Integer REQUEST_CODE = 1;
     
+    private PaymentViewModel mPaymentViewModel;
+    private LiveData<List<Payment>> mPaymentsList;
+    private final PaymentListAdapter adapter = new PaymentListAdapter(new PaymentListAdapter.PaymentDiff(), this,getApplication());
+    private List<Payment> mPayments;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +60,6 @@ public class DebtDetailActivity extends AppCompatActivity {
         
         
         
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         RelativeLayout payBtn = (RelativeLayout) findViewById(R.id.payBtn);
         TextView txtName = (TextView) findViewById(R.id.distributorName);
         TextView txtStatus = (TextView) findViewById(R.id.status);
@@ -62,7 +67,14 @@ public class DebtDetailActivity extends AppCompatActivity {
         TextView txtDueDate = (TextView) findViewById(R.id.dueDate);
         TextView txtAmount = (TextView) findViewById(R.id.amount);
         TextView txtRemainingAmount = (TextView) findViewById(R.id.remainingAmount);
-        
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+        recyclerView.setItemAnimator(null);
+        recyclerView.setAdapter(adapter);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
         
         
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
@@ -72,6 +84,14 @@ public class DebtDetailActivity extends AppCompatActivity {
             mDebt = (Debt) getIntent().getSerializableExtra("debt");
             Log.d("DEBT",new Gson().toJson(mDebt));
             if(mDebt != null){
+                mPaymentViewModel = new ViewModelProvider(this).get(PaymentViewModel.class);
+                mPaymentsList = mPaymentViewModel.getAllDebtPayment(mDebt.getId());
+                
+                mPaymentsList.observe(this, payments -> {
+                    mPayments = payments;
+                    adapter.submitList(payments);
+                });
+
                 Integer distributorId = mDebt.getDistributorId();
                 DistributorRepository dRepository = new DistributorRepository(getApplication());
                 Distributor distributor = dRepository.findById(distributorId);
@@ -80,8 +100,10 @@ public class DebtDetailActivity extends AppCompatActivity {
                 }
                 if(mDebt.getStatus()){
                     txtStatus.setText("Lunas");
+                    payBtn.setVisibility(View.GONE);
                 }else{
                     txtStatus.setText("Belum Lunas");
+                    payBtn.setVisibility(View.VISIBLE);
                 }
                 txtTransactionDate.setText(dateFormat.format(mDebt.getCreatedAt()));
                 txtDueDate.setText(dateFormat.format(mDebt.getDueDate()));
@@ -114,6 +136,12 @@ public class DebtDetailActivity extends AppCompatActivity {
             if (resultCode == REQUEST_CODE) {
                 this.finish();
             }
+    }
+
+
+    @Override
+    public void PaymentClick(Integer position,Payment payment)
+    {
     }
     
     

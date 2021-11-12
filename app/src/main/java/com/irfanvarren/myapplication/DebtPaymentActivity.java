@@ -6,12 +6,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 import android.util.Log;
 import android.content.Intent;
+import android.content.Context;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -56,7 +58,7 @@ public class DebtPaymentActivity extends AppCompatActivity {
     private Date mPaymentDate = new Date();
     private  Double remainingAmount = new Double(0);
     private Debt mDebt;
-   
+    
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +71,8 @@ public class DebtPaymentActivity extends AppCompatActivity {
         NumberFormat nf = NumberFormat.getNumberInstance(new Locale("in", "ID"));
         
         Intent previousIntent = getIntent();
-       
-    
+        
+        
         if(previousIntent.getExtras() != null){
             name = previousIntent.getStringExtra("name");
             remainingAmount = previousIntent.getDoubleExtra("remainingAmount", 0);
@@ -84,8 +86,21 @@ public class DebtPaymentActivity extends AppCompatActivity {
         TextInputEditText txtNote = (TextInputEditText) findViewById(R.id.note);
         CheckBox ckFullPayment = (CheckBox) findViewById(R.id.ckFullPayment);
         RelativeLayout payBtn = (RelativeLayout) findViewById(R.id.payBtn);
+        RelativeLayout amountWrapper = (RelativeLayout) findViewById(R.id.amountWrapper);
+        
+        amountWrapper.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txtAmount.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if(imm != null){
+                imm.showSoftInput(txtAmount, InputMethodManager.SHOW_IMPLICIT);
+                }
+            }
+        });
+        
         tvDistributorName.setText(name);
-
+        
         tvRemainingAmount.setText("Rp. "+nf.format(remainingAmount));
         
         txtAmount.addTextChangedListener(new TextWatcher() {
@@ -144,36 +159,47 @@ public class DebtPaymentActivity extends AppCompatActivity {
         payBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 Double amount = new Double(0);
                 if (!TextUtils.isEmpty(txtAmount.getText())) {
                     amount = Double.valueOf(txtAmount.getText().toString());
                 }
+
+                if(amount <= 0){
+                    Toast.makeText(getApplicationContext(), "Nominal harus lebih dari 0", Toast.LENGTH_LONG).show();
+                    return;
+                }else if(amount > remainingAmount){
+                    Toast.makeText(getApplicationContext(), "Nominal harus lebih kecil dari sisa hutang", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 String note = txtNote.getText().toString();
                 Integer debtId = null;
                 Integer purchaseId = null; 
                 if(mDebt != null){
-                debtId = mDebt.getId();
-                purchaseId = mDebt.getPurchaseId();
+                    debtId = mDebt.getId();
+                    purchaseId = mDebt.getPurchaseId();
                 }
                 Payment payment = new Payment();
                 payment.setAmount(amount);
                 payment.setNote(note);
                 payment.setPaymentDate(mPaymentDate);
                 if(debtId != null){
-                payment.setDebtId(debtId);
+                    payment.setDebtId(debtId);
                 }
                 if(purchaseId != null){
-                payment.setPurchaseId(purchaseId);
+                    payment.setPurchaseId(purchaseId);
                 }
                 PaymentRepository paymentRepository = new PaymentRepository(getApplication());
                 paymentRepository.insert(payment);
-
+                
                 if(mDebt != null){
                     Double amountPaid = new Double(0);
                     if(paymentRepository.getDebtAmountPaidTotal(mDebt.getId()) != null){
                         amountPaid = paymentRepository.getDebtAmountPaidTotal(mDebt.getId());
                     }
-                   
+                    
                     DebtRepository debtRepository = new DebtRepository(getApplication());
                     mDebt.setAmountPaid(amountPaid);
                     if(amountPaid >= mDebt.getAmount()){
@@ -183,7 +209,7 @@ public class DebtPaymentActivity extends AppCompatActivity {
                     Log.d("DEBT_PAYMENT",new Gson().toJson(mDebt));
                     debtRepository.update(mDebt);
                 }
-
+                
                 Toast.makeText(getApplicationContext(), "Data berhasil disimpan", Toast.LENGTH_LONG).show();
                 setResult(REQUEST_CODE);
                 DebtPaymentActivity.this.finish();

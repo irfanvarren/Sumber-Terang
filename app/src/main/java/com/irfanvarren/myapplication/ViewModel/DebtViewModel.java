@@ -21,8 +21,8 @@ public class DebtViewModel extends AndroidViewModel {
     }
     
 
-    public LiveData<List<Debt>> getAll(){
-        return mRepository.getAll();
+    public LiveData<List<Debt>> getAll(List<Integer> status){
+        return mRepository.getAll(status);
     }
 
     public LiveData<Double> getTotalDebt(){

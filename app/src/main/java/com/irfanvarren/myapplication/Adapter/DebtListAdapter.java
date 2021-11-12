@@ -4,8 +4,10 @@ import android.app.Application;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.res.Resources;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,21 +80,50 @@ public class DebtListAdapter extends ListAdapter<Debt,DebtListAdapter.ViewHolder
             if(distributor != null){
                 txtName.setText(distributor.getName());
             }
-            txtAmount.setText(nf.format(debt.getAmount()));
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
-            txtDueDate.setText("JT: "+dateFormat.format(debt.getDueDate()));
+
+            Double debtAmount = debt.getAmount();
+            if(debtAmount == null){
+                debtAmount = 0.0;
+            }
+
+            Double debtAmountPaid = debt.getAmountPaid();
+            if(debtAmountPaid == null){
+                debtAmountPaid = 0.0;
+            }
+      
             if(debt.getStatus()){
                 txtStatus.setText("Lunas");
+                txtAmount.setTextColor(mContext.getResources().getColor(R.color.primary));
+                txtAmount.setText("Rp. "+nf.format(debtAmountPaid));
             }else{
                 txtStatus.setText("Belum Lunas");
+                txtAmount.setTextColor(mContext.getResources().getColor(R.color.red));
+                txtAmount.setText("Rp. "+nf.format(debtAmount - debtAmountPaid));
             }  
+
+           
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
+            txtDueDate.setText("JT: "+dateFormat.format(debt.getDueDate()));
 
             rootView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                   
                     mDebtListener.DebtClick(getAdapterPosition(),mDebt);
+                   
                 }
             });
+
+            if (getItemViewType() == 1) {
+           
+                            float dip = 90f;
+                            Resources r = rootView.getResources();
+                            int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, r.getDisplayMetrics());
+                
+                            ViewGroup.MarginLayoutParams rootLayoutParams = (ViewGroup.MarginLayoutParams) rootView.getLayoutParams();
+                            rootLayoutParams.setMargins(0, 0, 0, px);
+                            rootView.requestLayout();
+                        }
         }
 
         @Override
@@ -110,6 +141,14 @@ public class DebtListAdapter extends ListAdapter<Debt,DebtListAdapter.ViewHolder
     @Override
     public void onBindViewHolder(DebtListAdapter.ViewHolder holder, int position) {
         holder.bind(getItem(position));
+    }
+
+    @Override
+    public int getItemViewType(int position){
+        if(position == (getItemCount()-1)){
+            return 1; // check if last item
+        }
+        return 0;
     }
 
     public static class DebtDiff extends DiffUtil.ItemCallback<Debt> {

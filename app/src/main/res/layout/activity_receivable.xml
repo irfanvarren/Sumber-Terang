@@ -28,11 +28,12 @@
                 android:paddingHorizontal="8dp"
                 android:layout_marginRight="12dp"
                 android:background="@drawable/roundedrect_darkgray_border"
-                android:hint="Cari Produk"
+                android:hint="Cari Pelanggan"
                 android:drawableStart="@drawable/ic_baseline_search_24"
                 android:drawablePadding="8dp"
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ic_baseline_search_24" 
+                android:textSize="13sp"
                 android:editable="false"/>
             <EditText
                 android:layout_width="match_parent"
@@ -42,9 +43,10 @@
                 android:drawableStart="@drawable/ic_baseline_calendar_today_24"
                 android:background="@drawable/roundedrect_darkgray_border"
                 android:layout_weight="1"
-                android:hint="Due Date"
+                android:hint="Jatuh Tempo"
                 android:drawablePadding="8dp"
                 android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
+                android:textSize="13sp"
                 android:editable="false" />
         </LinearLayout>
 
@@ -64,7 +66,7 @@
                 <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Piutang"
+                android:text="Total Piutang"
                 />
                 <TextView
                 android:id="@+id/totalReceivable"
@@ -96,6 +98,26 @@
                 android:text="0"
                 />
            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <CheckBox
+        android:id="@+id/ckUnpaid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="Belum Lunas"
+        android:checked="true"/>
+        <CheckBox
+        android:id="@+id/ckPaid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="Lunas"
+        android:checked="false"/>
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

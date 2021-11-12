@@ -19,9 +19,10 @@ public class ReceivableViewModel extends AndroidViewModel {
         mRepository = new ReceivableRepository(application);
 
     }
+    
 
-    public LiveData<List<Receivable>> getAll(){
-        return mRepository.getAll();
+    public LiveData<List<Receivable>> getAll(List<Integer> status){
+        return mRepository.getAll(status);
     }
 
     public LiveData<Double> getTotalReceivable(){

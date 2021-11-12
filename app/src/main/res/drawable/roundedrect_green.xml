@@ -15,6 +15,6 @@
             <corners android:radius="@dimen/rounded_corner_radius" />
         </shape>
     </item>
-</selector>>
+</selector>
 
     <!-- Here is the corner radius -->

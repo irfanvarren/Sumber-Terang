@@ -2,10 +2,11 @@ package com.irfanvarren.myapplication.Database;
 
 import android.app.Application;
 
+import androidx.lifecycle.LiveData;
 import com.irfanvarren.myapplication.Model.Payment;
 
 import java.util.Date;
-
+import java.util.List;
 public class PaymentRepository {
     private PaymentDao mPaymentDao;
     private AppDatabase db;
@@ -15,8 +16,22 @@ public class PaymentRepository {
         mPaymentDao = db.paymentDao();
     }
 
+
+    public LiveData<List<Payment>> getAllDebtPayment(Integer id){
+        return mPaymentDao.getAllDebtPayment(id);
+    }
+
+    public LiveData<List<Payment>> getAllReceivablePayment(Integer id){
+        return mPaymentDao.getAllReceivablePayment(id);
+    }
+    
+
     public Double getDebtAmountPaidTotal(Integer id){
         return mPaymentDao.getDebtAmountPaidTotal(id);
+    }
+
+    public Double getReceivableAmountPaidTotal(Integer id){
+        return mPaymentDao.getReceivableAmountPaidTotal(id);
     }
 
     public long insert(Payment payment) {

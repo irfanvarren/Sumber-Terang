@@ -23,12 +23,14 @@
             <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nama Supplier"/>
+            android:text="Nama Pelanggan"
+            android:textSize="16sp"/>
             <TextView
-            android:id="@+id/supplierName"
+            android:id="@+id/customerName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="-"/>
+            android:text="-"
+            android:textSize="16sp"/>
         </LinearLayout>
 
         <View style="@style/Divider" />
@@ -41,12 +43,13 @@
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:orientation="horizontal"
-           android:layout_marginBottom="5dp">
+           android:layout_marginBottom="8dp">
                
                 <TextView
                 android:id="@+id/status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:text="Status"
                 />
@@ -55,7 +58,7 @@
            <LinearLayout
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:layout_marginBottom="5dp"
+           android:layout_marginBottom="8dp"
            android:orientation="horizontal">
                 <LinearLayout
                 android:layout_width="match_parent"
@@ -65,12 +68,14 @@
                     <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Tanggal Transaksi"/>
+                    android:text="Tanggal Transaksi"
+                    android:textSize="16sp"/>
                     <TextView
                     android:id="@+id/transactionDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="-"/>
+                    android:text="-"
+                    android:textSize="16sp"/>
                 </LinearLayout>
                 <LinearLayout
                 android:layout_width="match_parent"
@@ -80,12 +85,14 @@
                     <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Jatuh Tempo"/>
+                    android:text="Jatuh Tempo"
+                    android:textSize="16sp"/>
                     <TextView
                     android:id="@+id/dueDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="-"/>
+                    android:text="-"
+                    android:textSize="16sp"/>
                 </LinearLayout>
            </LinearLayout>
            
@@ -102,12 +109,14 @@
                     <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Total"/>
+                    android:text="Total"
+                    android:textSize="16sp"/>
                     <TextView
                     android:id="@+id/amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="-"/>
+                    android:text="-"
+                    android:textSize="16sp"/>
                 </LinearLayout>
                 <LinearLayout
                 android:layout_width="match_parent"
@@ -117,17 +126,61 @@
                     <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Belum Dibayar"/>
+                    android:text="Belum Dibayar"
+                    android:textSize="16sp"/>
                     <TextView
                     android:id="@+id/remainingAmount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="-"/>
+                    android:text="-"
+                    android:textSize="16sp"/>
                 </LinearLayout>
            </LinearLayout>
         </LinearLayout>
 
         <View style="@style/Divider" />
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:orientation="vertical">
+            <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="Histori Pembayaran"/>
+
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Nominal"
+            android:textStyle="bold"/>
+            
+            <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tanggal Transaksi"
+            android:textStyle="bold"/>
+           
+            </LinearLayout>  
+
+            <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false" />
+         </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout

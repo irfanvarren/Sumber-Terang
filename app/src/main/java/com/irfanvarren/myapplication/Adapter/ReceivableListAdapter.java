@@ -4,8 +4,10 @@ import android.app.Application;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.res.Resources;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,21 +80,50 @@ public class ReceivableListAdapter extends ListAdapter<Receivable,ReceivableList
             if(customer != null){
                 txtName.setText(customer.getName());
             }
-            txtAmount.setText(nf.format(receivable.getAmount()));
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
-            txtDueDate.setText("JT: "+dateFormat.format(receivable.getDueDate()));
+
+            Double receivableAmount = receivable.getAmount();
+            if(receivableAmount == null){
+                receivableAmount = 0.0;
+            }
+
+            Double receivableAmountPaid = receivable.getAmountPaid();
+            if(receivableAmountPaid == null){
+                receivableAmountPaid = 0.0;
+            }
+      
             if(receivable.getStatus()){
                 txtStatus.setText("Lunas");
+                txtAmount.setTextColor(mContext.getResources().getColor(R.color.primary));
+                txtAmount.setText("Rp. "+nf.format(receivableAmountPaid));
             }else{
                 txtStatus.setText("Belum Lunas");
+                txtAmount.setTextColor(mContext.getResources().getColor(R.color.red));
+                txtAmount.setText("Rp. "+nf.format(receivableAmount - receivableAmountPaid));
             }  
+
+           
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
+            txtDueDate.setText("JT: "+dateFormat.format(receivable.getDueDate()));
 
             rootView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                   
                     mReceivableListener.ReceivableClick(getAdapterPosition(),mReceivable);
+                   
                 }
             });
+
+            if (getItemViewType() == 1) {
+           
+                            float dip = 90f;
+                            Resources r = rootView.getResources();
+                            int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, r.getDisplayMetrics());
+                
+                            ViewGroup.MarginLayoutParams rootLayoutParams = (ViewGroup.MarginLayoutParams) rootView.getLayoutParams();
+                            rootLayoutParams.setMargins(0, 0, 0, px);
+                            rootView.requestLayout();
+                        }
         }
 
         @Override
@@ -110,6 +141,14 @@ public class ReceivableListAdapter extends ListAdapter<Receivable,ReceivableList
     @Override
     public void onBindViewHolder(ReceivableListAdapter.ViewHolder holder, int position) {
         holder.bind(getItem(position));
+    }
+
+    @Override
+    public int getItemViewType(int position){
+        if(position == (getItemCount()-1)){
+            return 1; // check if last item
+        }
+        return 0;
     }
 
     public static class ReceivableDiff extends DiffUtil.ItemCallback<Receivable> {

@@ -17,11 +17,10 @@ public class DebtRepository {
     public DebtRepository(Application application) {
         db = AppDatabase.getDatabase(application);
         mDebtDao = db.debtDao();
-        mAllDebts = mDebtDao.getAllActive();
     }
     
-    public LiveData<List<Debt>> getAll() {
-        return mAllDebts;
+    public LiveData<List<Debt>> getAll(List<Integer> status) {
+        return mDebtDao.getAllWithStatus(status);
     }
 
     public LiveData<Double> getTotalDebt(){
