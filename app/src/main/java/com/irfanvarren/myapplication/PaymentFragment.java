@@ -64,6 +64,9 @@ import com.irfanvarren.myapplication.ViewModel.DistributorViewModel;
 import com.irfanvarren.myapplication.ViewModel.OrderViewModel;
 import com.irfanvarren.myapplication.ViewModel.PurchaseViewModel;
 
+
+import com.github.slugify.Slugify;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -333,7 +336,7 @@ public class PaymentFragment extends Fragment {
                     
                     if (txtInvoiceNo.getText().toString().trim().length() > 0) {
                         invoiceNo = txtInvoiceNo.getText().toString().trim();
-                        purchase.setInvoiceNo(txtInvoiceNo.getText().toString().trim());
+                        purchase.setInvoiceNo(invoiceNo);
                     }
                     
                     if (txtNote.getText().toString().trim().length() > 0) {
@@ -352,7 +355,8 @@ public class PaymentFragment extends Fragment {
                     }
                     
                     if (invoiceBitmap != null) {
-                        mInvoicePath = saveToInternalStorage(invoiceBitmap, "purchases", invoiceNo);
+                        Slugify slg = new Slugify();
+                        mInvoicePath = saveToInternalStorage(invoiceBitmap, "purchases", slg.slugify(invoiceNo));
                     }
                     
                     purchase.setAmountPaid(amountPaid);
@@ -405,7 +409,7 @@ public class PaymentFragment extends Fragment {
                             inventory.setProductId(cartItem.getProductId());
                             inventory.setQty(cartItem.getQty());
                             inventory.setPrice(cartItem.getPrice());
-                            inventory.setInvoiceNo(mInvoiceNo);
+                            inventory.setInvoiceNo(invoiceNo);
                             inventory.setPurchaseId(mPurchaseId);
                             inventory.setType("in");
                             inventory.setTransactionType("buy");
@@ -440,7 +444,7 @@ public class PaymentFragment extends Fragment {
                     
                     if (txtInvoiceNo.getText().toString().trim().length() > 0) {
                         invoiceNo = txtInvoiceNo.getText().toString().trim();
-                        order.setInvoiceNo(txtInvoiceNo.getText().toString().trim());
+                        order.setInvoiceNo(invoiceNo);
                     }
                     
                     if (txtNote.getText().toString().trim().length() > 0) {
@@ -463,7 +467,8 @@ public class PaymentFragment extends Fragment {
                     }
                     
                     if (invoiceBitmap != null) {
-                        mInvoicePath = saveToInternalStorage(invoiceBitmap, "orders", invoiceNo);
+                        Slugify slg = new Slugify();
+                        mInvoicePath = saveToInternalStorage(invoiceBitmap, "orders", slg.slugify(invoiceNo));
                     }
                     order.setInvoicePath(mInvoicePath);
                     order.setStatus(mStatus);
@@ -515,7 +520,7 @@ public class PaymentFragment extends Fragment {
                             inventory.setProductId(cartItem.getProductId());
                             inventory.setQty(-cartItem.getQty());
                             inventory.setPrice(cartItem.getPrice());
-                            inventory.setInvoiceNo(mInvoiceNo);
+                            inventory.setInvoiceNo(invoiceNo);
                             inventory.setOrderId(mOrderId);
                             inventory.setType("out");
                             inventory.setTransactionType("sell");
@@ -648,6 +653,7 @@ public class PaymentFragment extends Fragment {
         ContextWrapper cw = new ContextWrapper(getActivity().getApplicationContext());
         File directory = cw.getDir(dir, Context.MODE_PRIVATE);
         Long ts = System.currentTimeMillis() / 1000;
+       
         String filename = ts.toString() + ".png";
         File mypath = new File(directory, filename);
         FileOutputStream fos = null;
@@ -659,7 +665,9 @@ public class PaymentFragment extends Fragment {
             e.printStackTrace();
         } finally {
             try {
-                fos.close();
+                if(fos != null) {
+                    fos.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -670,6 +678,9 @@ public class PaymentFragment extends Fragment {
     private String saveToInternalStorage(Bitmap bitmapImage, String dir, String filename) {
         ContextWrapper cw = new ContextWrapper(getActivity().getApplicationContext());
         File directory = cw.getDir(dir, Context.MODE_PRIVATE);
+        if(filename.contains(".")){
+            filename = filename.substring(0,filename.lastIndexOf("."));
+        }
         filename = filename + ".png";
         File mypath = new File(directory, filename);
         FileOutputStream fos = null;
@@ -681,7 +692,9 @@ public class PaymentFragment extends Fragment {
             e.printStackTrace();
         } finally {
             try {
-                fos.close();
+                if(fos != null) {
+                    fos.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -351,6 +351,9 @@ public class ProductInputActivity extends AppCompatActivity{
     private String saveToInternalStorage(Bitmap bitmapImage,String dir,String filename) {
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         File directory = cw.getDir(dir, Context.MODE_PRIVATE);
+        if(filename.contains(".")){
+            filename = filename.substring(0,filename.lastIndexOf("."));
+        }
         filename = filename+".png";
         File mypath = new File(directory, filename);
         FileOutputStream fos = null;
