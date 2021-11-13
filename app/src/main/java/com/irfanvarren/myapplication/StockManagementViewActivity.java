@@ -119,6 +119,15 @@ public class StockManagementViewActivity extends AppCompatActivity implements In
 
     @Override
     public void OnEditClick(int position, Inventory current) {
+
+        if(current.getPurchaseId() != 0) {
+            Toast.makeText(getApplicationContext(),"Mengubah stok ini akan mengubah nota pembelian silahkan ubah melalui pembelian",Toast.LENGTH_SHORT).show();
+            return ;
+        }else if(current.getOrderId() != 0) {
+            Toast.makeText(getApplicationContext(),"Mengubah stok ini akan mengubah nota penjualan silahkan ubah melalui penjualan",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         FragmentManager fm = getSupportFragmentManager();
         AddStockDialogFragment addStockDialogFragment = new AddStockDialogFragment();
         Bundle bundle = new Bundle();
@@ -130,6 +139,15 @@ public class StockManagementViewActivity extends AppCompatActivity implements In
 
     @Override
     public void OnDeleteClick(int position, Inventory current) {
+        
+        if(current.getPurchaseId() != 0) {
+            Toast.makeText(getApplicationContext(),"Mengubah stok ini akan mengubah nota pembelian silahkan ubah melalui pembelian",Toast.LENGTH_SHORT).show();
+            return ;
+        }else if(current.getOrderId() != 0) {
+            Toast.makeText(getApplicationContext(),"Mengubah stok ini akan mengubah nota penjualan silahkan ubah melalui penjualan",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         InventoryRepository iRepository = new InventoryRepository(getApplication());
         iRepository.delete(current);
         Toast.makeText(getApplicationContext(),"Stok berhasil dihapus",Toast.LENGTH_LONG).show();

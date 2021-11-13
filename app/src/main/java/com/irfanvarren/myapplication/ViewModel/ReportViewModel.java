@@ -7,8 +7,9 @@ import androidx.lifecycle.LiveData;
 
 import com.irfanvarren.myapplication.Database.ReportRepository;
 import com.irfanvarren.myapplication.Model.Report;
-
+import com.irfanvarren.myapplication.Model.ReportDetail;
 import java.util.List;
+import java.util.Date;
 
 public class ReportViewModel extends AndroidViewModel {
     private ReportRepository mRepository;
@@ -18,6 +19,10 @@ public class ReportViewModel extends AndroidViewModel {
         super(application);
         mRepository = new ReportRepository(application);
 
+    }
+
+    public LiveData<List<ReportDetail>> getReportDetail(Date date) {
+        return mRepository.getReportDetail(date);
     }
 
     public LiveData<List<Report>> getThisMonth(){

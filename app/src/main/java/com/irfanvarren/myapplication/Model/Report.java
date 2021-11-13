@@ -12,8 +12,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Report {
-    @PrimaryKey
+public class Report implements Serializable {
+    @PrimaryKey(autoGenerate = true)
     public Integer id;
 
     @ColumnInfo(name = "total_transaction")

@@ -17,6 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity android:name=".ReportActivity"></activity>
+        <activity android:name=".ReportDetailActivity"></activity>
         <activity android:name=".ReceivableActivity" />
         <activity android:name=".ReceivableDetailActivity" />
         <activity android:name=".ReceivableInputActivity" />

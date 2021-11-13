@@ -38,7 +38,7 @@ public class ReportListAdapter extends ListAdapter<Report,ReportListAdapter.View
     
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private Context mContext;
-        private TextView txtTotalSell,txtTotalPurchase,txtTransactionDate,txtTransactionMonth,txtTransactionYear;
+        private TextView txtTotalSell,txtTotalPurchase,txtTransactionDate,txtTransactionMonth,txtTransactionYear,txtTotalTransaction;
         private View rootView;
         private Report mReport;
         private OnReportListener mReportListener;
@@ -51,6 +51,7 @@ public class ReportListAdapter extends ListAdapter<Report,ReportListAdapter.View
             txtTransactionDate = view.findViewById(R.id.transactionDate);
             txtTransactionMonth = view.findViewById(R.id.transactionMonth);
             txtTransactionYear = view.findViewById(R.id.transactionYear);
+            txtTotalTransaction = view.findViewById(R.id.totalTransaction);
             rootView = view;
         }
         public void bind(Report report){
@@ -72,6 +73,11 @@ public class ReportListAdapter extends ListAdapter<Report,ReportListAdapter.View
             Double totalPurchase = (Double) report.getTotalPurchase();
             if(totalPurchase != null){
                 txtTotalPurchase.setText(nf.format(totalPurchase));
+            }
+
+            Integer totalTransaction = (Integer) report.getTotalTransaction();
+            if(totalTransaction != null){
+                txtTotalTransaction.setText(String.valueOf(totalTransaction) + " Transaksi");
             }
             
             rootView.setOnClickListener(new View.OnClickListener() {

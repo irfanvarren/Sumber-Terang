@@ -26,6 +26,7 @@ import com.irfanvarren.myapplication.Model.Purchase;
 import com.irfanvarren.myapplication.Model.PurchaseDetail;
 import com.irfanvarren.myapplication.Model.Receivable;
 import com.irfanvarren.myapplication.Model.Report;
+import com.irfanvarren.myapplication.Model.ReportDetail;
 
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
@@ -45,7 +46,8 @@ import java.util.concurrent.Executors;
                 Debt.class, Receivable.class,
                 Payment.class,
                 OtherCost.class,
-                Report.class
+                Report.class,
+                ReportDetail.class
         }, 
         version = 1,
         exportSchema = true

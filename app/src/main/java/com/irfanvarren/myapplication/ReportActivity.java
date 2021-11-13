@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -157,6 +158,9 @@ public class ReportActivity extends AppCompatActivity implements ReportListAdapt
 
     @Override
     public void ReportClick(Integer position,Report report) {
+        Intent intent = new Intent(getApplicationContext(), ReportDetailActivity.class);
+        intent.putExtra("report", report);
+        startActivity(intent);
     }
 
     private static final String[] DURATION_TYPES = new String[] {

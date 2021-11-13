@@ -120,10 +120,11 @@
                     android:paddingHorizontal="15dp">
 
                     <TextView
+                        android:id="@+id/totalTransaction"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="1 Transaksi"
+                        android:text=""
                         android:textStyle="bold" />
 
                     <TextView

@@ -94,7 +94,7 @@ public class PaymentFragment extends Fragment {
     private PurchaseViewModel purchaseViewModel;
     private OrderViewModel orderViewModel;
     private String mInvoiceNo, mNote, mInvoicePath, appTitle;
-    private Date mTransactionDate = new Date(), mDueDate = new Date();
+    private Date mTransactionDate = new Date(), mDueDate;
     private Boolean mStatus = false;
     private CartItemViewModel cartItemViewModel;
     private Double mTotalPrice = new Double(0), mSubtotal = new Double(0), mOtherCost = new Double(0);
@@ -359,7 +359,9 @@ public class PaymentFragment extends Fragment {
                     purchase.setInvoicePath(mInvoicePath);
                     purchase.setStatus(mStatus);
                     purchase.setTransactionDate(mTransactionDate);
-                    purchase.setDueDate(mDueDate);
+                    if(mDueDate != null){
+                        purchase.setDueDate(mDueDate);
+                    }
                     
                     PurchaseRepository mRepository = new PurchaseRepository(getActivity().getApplication());
                     mPurchaseId = (int) mRepository.insert(purchase);
@@ -385,8 +387,9 @@ public class PaymentFragment extends Fragment {
                         debt.setDistributorId(mDistributorId);
                         debt.setPurchaseId(mPurchaseId);
                         debt.setAmount(mSubtotal - amountPaid);
-                        debt.setDueDate(mDueDate);
-                        debt.setStatus(false);
+                        if(mDueDate != null){
+                            debt.setDueDate(mDueDate);
+                        }debt.setStatus(false);
                         DebtRepository debtRepository = new DebtRepository(getActivity().getApplication());
                         debtRepository.insert(debt);
                     }
@@ -465,8 +468,9 @@ public class PaymentFragment extends Fragment {
                     order.setInvoicePath(mInvoicePath);
                     order.setStatus(mStatus);
                     order.setTransactionDate(mTransactionDate);
-                    order.setDueDate(mDueDate);
-                    
+                    if(mDueDate != null){
+                        order.setDueDate(mDueDate);
+                    }
                     OrderRepository mRepository = new OrderRepository(getActivity().getApplication());
                     mOrderId = (int) mRepository.insert(order);
                     
@@ -491,7 +495,9 @@ public class PaymentFragment extends Fragment {
                         receivable.setCustomerId(mCustomerId);
                         receivable.setOrderId(mOrderId);
                         receivable.setAmount(mSubtotal - amountPaid);
-                        receivable.setDueDate(mDueDate);
+                        if(mDueDate != null){
+                            receivable.setDueDate(mDueDate);
+                        }
                         receivable.setStatus(false);
                         ReceivableRepository receivableRepository = new ReceivableRepository(getActivity().getApplication());
                         receivableRepository.insert(receivable);

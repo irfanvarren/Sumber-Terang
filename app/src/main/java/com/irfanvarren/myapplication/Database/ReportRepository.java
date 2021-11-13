@@ -15,6 +15,7 @@ import java.time.ZoneOffset;
 import java.time.temporal.ChronoField;
 
 import com.irfanvarren.myapplication.Model.Report;
+import com.irfanvarren.myapplication.Model.ReportDetail;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 import java.time.temporal.TemporalAdjusters;
 import com.google.gson.Gson;
@@ -25,6 +26,18 @@ public class ReportRepository {
         db = AppDatabase.getDatabase(application);
     }
     
+    public LiveData<List<ReportDetail>> getReportDetail(Date date){
+        ZoneId zoneId = ZoneId.systemDefault();
+        LocalDate transactionDate = date.toInstant().atZone(zoneId).toLocalDate();  
+        LocalDate startDate = transactionDate.with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate endDate = transactionDate.with(TemporalAdjusters.lastDayOfMonth());
+        Long start = startDate.atStartOfDay(zoneId).toEpochSecond() * 1000;
+        Long end = endDate.atTime(LocalTime.MAX).atZone(zoneId).toEpochSecond() * 1000;
+        return db.reportDao().getReportDetail(start,end);
+    }
+
+   
+
     public LiveData<List<Report>> getThisMonth(){
         LocalDate now = LocalDate.now();    
         String currentYear = String.valueOf(now.getYear());
@@ -39,6 +52,12 @@ public class ReportRepository {
         
         return db.reportDao().getThisMonth(start,end);
     }
+
+    public LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
+    return dateToConvert.toInstant()
+      .atZone(ZoneId.systemDefault())
+      .toLocalDate();
+}
     
     
     public LiveData<Double> getTotalIncome(String durationType){

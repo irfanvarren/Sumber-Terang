@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,6 +63,7 @@ public class AddStockDialogFragment extends DialogFragment {
         TextInputLayout txtQty = (TextInputLayout) view.findViewById(R.id.qty);
         TextInputLayout txtPrice = (TextInputLayout) view.findViewById(R.id.price);
         TextInputLayout txtNote = (TextInputLayout) view.findViewById(R.id.note);
+        TextView txtMessage = (TextView) view.findViewById(R.id.message);
         Button addBtn = (Button) view.findViewById(R.id.addBtn);
         Button cancelBtn = (Button) view.findViewById(R.id.cancelBtn);
 
@@ -76,6 +78,7 @@ public class AddStockDialogFragment extends DialogFragment {
             txtQty.getEditText().setText(String.valueOf(mInventory.getQty()));
             txtPrice.getEditText().setText(String.valueOf(mInventory.getPrice()));
             txtNote.getEditText().setText(mInventory.getNote());
+
             addBtn.setText("Ubah");
             cmd = "update";
         }
