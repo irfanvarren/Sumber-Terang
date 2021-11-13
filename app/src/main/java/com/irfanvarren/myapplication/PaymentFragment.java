@@ -36,6 +36,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.irfanvarren.myapplication.Adapter.CustomerArrayAdapter;
@@ -626,10 +627,13 @@ public class PaymentFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bitmap;
+        
         if (resultCode == Activity.RESULT_OK) {
+            Log.d("ACTIVITY_RESULT","Result True");
             ImageView imageView = (ImageView) getView().findViewById(R.id.invoiceImg);
             LinearLayout imageDesc = (LinearLayout) getView().findViewById(R.id.invoiceImgDesc);
             if (getPickImageResultUri(data) != null) {
+                Log.d("ACTIVITY_RESULT","get uri");
                 invoiceUri = getPickImageResultUri(data);
                 try {
                     invoiceBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), invoiceUri);
@@ -640,13 +644,16 @@ public class PaymentFragment extends Fragment {
                     e.printStackTrace();
                 }
             } else {
+                if(data.getExtras() != null){
                 bitmap = (Bitmap) data.getExtras().get("data");
                 invoiceBitmap = bitmap;
                 imageDesc.setVisibility(View.GONE);
                 imageView.setVisibility(View.VISIBLE);
                 imageView.setImageBitmap(invoiceBitmap);
+                }
             }
         }
+        Log.d("ACTIVITY_RESULT","Result False");
     }
     
     private String saveToInternalStorage(Bitmap bitmapImage, String dir) {
