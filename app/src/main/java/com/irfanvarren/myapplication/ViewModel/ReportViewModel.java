@@ -29,10 +29,18 @@ public class ReportViewModel extends AndroidViewModel {
         return mRepository.getThisMonth();
     }
 
+    public LiveData<List<Report>> getToday(){
+        return mRepository.getToday();
+    }
+
+    public LiveData<List<Report>> getLastMonth(){
+        return mRepository.getLastMonth();
+    }
 
     public LiveData<Double> getTotalIncome(String durationType){
         return mRepository.getTotalIncome(durationType);
     }
+
     public LiveData<Double> getTotalExpense(String durationType){
         return mRepository.getTotalExpense(durationType);
     }

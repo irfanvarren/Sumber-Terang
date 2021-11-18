@@ -73,38 +73,53 @@ public class ReportActivity extends AppCompatActivity implements ReportListAdapt
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-        mReportViewModel = new ViewModelProvider(this).get(ReportViewModel.class);
+        mReportViewModel = new ViewModelProvider(this).get(ReportViewModel.class);     
         mReportList = mReportViewModel.getThisMonth();
-        mReportList.observe(this, report -> {
+        mReportList.observe(ReportActivity.this, report -> {
             adapter.submitList(report);
         });
 
-        mReportViewModel.getTotalIncome(mDurationType).observe(this, totalIncome -> {
+        mReportViewModel.getTotalIncome("All").observe(this, totalIncome -> {
             mTotalIncome = totalIncome;
             txtTotalIncome.setText("Rp. " + nf.format(totalIncome));
         });
 
-        mReportViewModel.getTotalExpense(mDurationType).observe(this, totalExpense -> {
+        mReportViewModel.getTotalExpense("All").observe(this, totalExpense -> {
             mTotalExpense = totalExpense;
             txtTotalExpense.setText("Rp. " + nf.format(totalExpense));
         });
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> durationAdapter = new ArrayAdapter<String>(this,
         android.R.layout.simple_dropdown_item_1line, DURATION_TYPES);
-        mTxtDurationType.setAdapter(adapter);
-        mTxtDurationType.setText(adapter.getItem(1).toString(),false);
+        mTxtDurationType.setAdapter(durationAdapter);
+        mTxtDurationType.setText(durationAdapter.getItem(1).toString(),false);
         mTxtDurationType.setThreshold(0);
         mTxtDurationType.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 mDurationType =  adapterView.getItemAtPosition(i).toString();
                 if(mDurationType.equals("Bulan Ini")) {
+                
+                mReportList = mReportViewModel.getThisMonth();
+                mReportList.observe(ReportActivity.this, report -> {
+                    adapter.submitList(report);
+                });
                    
-                   
+                }else if(mDurationType.equals("Hari Ini")){
+                    mReportList = mReportViewModel.getToday();
+                    mReportList.observe(ReportActivity.this, report -> {
+                        adapter.submitList(report);
+                    });
+
+                }else if(mDurationType.equals("Bulan Lalu")){
+                    mReportList = mReportViewModel.getLastMonth();
+                    mReportList.observe(ReportActivity.this, report -> {
+                        adapter.submitList(report);
+                    });
                 }else if(mDurationType.equals("Pilih Tanggal")){
-                    Toast.makeText(getApplicationContext(),"Fitur ini masih belum tersedia",Toast.LENGTH_SHORT).show();
-                    //customDateWrapper.setVisibility(View.VISIBLE);                  
-                    //Toast.makeText(getApplicationContext(),"show hidden select date",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(),"Fitur ini masih belum tersedia",Toast.LENGTH_SHORT).show();
+                    customDateWrapper.setVisibility(View.VISIBLE);                  
+                    Toast.makeText(getApplicationContext(),"show hidden select date",Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getApplicationContext(),"Fitur ini masih belum tersedia",Toast.LENGTH_SHORT).show();
                 }

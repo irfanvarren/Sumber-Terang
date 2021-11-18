@@ -36,8 +36,6 @@ public class ReportRepository {
         return db.reportDao().getReportDetail(start,end);
     }
 
-   
-
     public LiveData<List<Report>> getThisMonth(){
         LocalDate now = LocalDate.now();    
         String currentYear = String.valueOf(now.getYear());
@@ -46,11 +44,32 @@ public class ReportRepository {
         LocalDate startDate = now.with(TemporalAdjusters.firstDayOfMonth());
         LocalDate endDate = now.with(TemporalAdjusters.lastDayOfMonth());
         
-        
         Long start = startDate.atStartOfDay(zoneId).toEpochSecond() * 1000;
         Long end = endDate.atTime(LocalTime.MAX).atZone(zoneId).toEpochSecond() * 1000;
         
-        return db.reportDao().getThisMonth(start,end);
+        return db.reportDao().getByDate(start,end);
+    }
+
+    public LiveData<List<Report>> getToday(){
+        LocalDate now = LocalDate.now();    
+        ZoneId zoneId = ZoneId.systemDefault();
+        Long start = now.atStartOfDay(zoneId).toEpochSecond() * 1000;
+        Long end = now.atTime(LocalTime.MAX).atZone(zoneId).toEpochSecond() * 1000;
+        
+        return db.reportDao().getByDate(start,end);
+    }
+
+    public LiveData<List<Report>> getLastMonth(){
+        LocalDate now = LocalDate.now();    
+        LocalDate earlier = now.minusMonths(1);
+        ZoneId zoneId = ZoneId.systemDefault();
+        LocalDate startDate = earlier.with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate endDate = earlier.with(TemporalAdjusters.lastDayOfMonth());
+        
+        Long start = startDate.atStartOfDay(zoneId).toEpochSecond() * 1000;
+        Long end = endDate.atTime(LocalTime.MAX).atZone(zoneId).toEpochSecond() * 1000;
+
+        return db.reportDao().getByDate(start,end);
     }
 
     public LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
@@ -70,6 +89,7 @@ public class ReportRepository {
             Long end = endDate.atTime(LocalTime.MAX).atZone(zoneId).toEpochSecond() * 1000;
             return db.reportDao().getTotalIncomeThisMonth(start, end);
         }
+
         return db.reportDao().getTotalIncome();
     }
     

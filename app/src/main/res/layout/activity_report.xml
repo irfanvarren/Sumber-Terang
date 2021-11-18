@@ -74,6 +74,13 @@
                                     android:inputType="date" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+                <Button
+                android:id="@+id/customDateBtn"
+                android:background="?colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cari"/>
             </LinearLayout>
 
             <LinearLayout
