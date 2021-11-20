@@ -173,10 +173,17 @@ public class SellFragment extends Fragment implements ProductListAdapter.OnProdu
                     
                     CartItem[] array = new CartItem[cartItems.size()];
                     cartItems.values().toArray(array);
+
+                    List<CartItem> cartItemsList = new ArrayList<CartItem>(cartItems.values());
+                    if(cartItemsList.isEmpty()){
+                        Toast.makeText(getActivity().getApplicationContext(), "Anda belum menambah produk apapun !", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
                     cartRepository.deleteAll();
                     cartRepository.insertAll(array);
 
-                    List<CartItem> cartItemsList = new ArrayList<CartItem>(cartItems.values());
+                    
                     MutableLiveData<List<CartItem>> cartItemsLive = new MutableLiveData<List<CartItem>>(cartItemsList);
                     cartItemViewModel.setTotalQty(totalQty);
                     cartItemViewModel.setTotalPrice(sumPriceItem(cartItemsList));
@@ -191,6 +198,7 @@ public class SellFragment extends Fragment implements ProductListAdapter.OnProdu
                     ft.commit();
                 } else {
                     Toast.makeText(getActivity().getApplicationContext(), "Anda belum menambah produk apapun !", Toast.LENGTH_LONG).show();
+                    return;
                 }
             }
         });
@@ -235,8 +243,21 @@ public class SellFragment extends Fragment implements ProductListAdapter.OnProdu
 
     @Override
     public void OnAddClick(int position, ProductAndCategory current, View itemView) {
+      
+
         TextView txtQty = itemView.findViewById(R.id.tvQty);
         int intQty = Integer.parseInt(txtQty.getText().toString());
+        if(current.product.getQty() > 0){
+            if((intQty + 1) > current.product.getQty()){
+                Toast.makeText(getActivity().getApplicationContext(), "Stok tidak mencukupi", Toast.LENGTH_LONG).show();    
+                return;
+            }
+        }
+        else{
+            Toast.makeText(getActivity().getApplicationContext(), "Stok produk habis !", Toast.LENGTH_LONG).show();
+            return ;
+        }
+
         intQty++;
         totalQty++;
 
@@ -246,10 +267,28 @@ public class SellFragment extends Fragment implements ProductListAdapter.OnProdu
             cartItems.put(current.product.id, updateItem);
             cartRepository.update(current.product.id,intQty,updateItem.getPrice());
         } else {
-            CartItem cartItem = new CartItem(1, current.product);
-            cartItem.setQty(intQty);
-            cartItems.put(current.product.id, cartItem);
-            cartRepository.insert(cartItem);
+            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            Fragment prev = getChildFragmentManager().findFragmentByTag("addCartItemDialog");
+            if (prev != null) {
+                ft.remove(prev);
+                ft.addToBackStack(null);
+            } else {
+                AddCartItemDialogFragment addCartItemDialogFragment = new AddCartItemDialogFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("product", current.product);
+                bundle.putInt("position", position);
+                bundle.putInt("type",2);
+
+                CartItem checkItem = cartItems.get(current.product.id);
+                if (checkItem != null) {
+                    bundle.putInt("qty", checkItem.getQty());
+                    bundle.putDouble("price", checkItem.getPrice());
+                }
+
+                addCartItemDialogFragment.setArguments(bundle);
+                addCartItemDialogFragment.setOnFinishListener(onFinishListener);
+                addCartItemDialogFragment.show(ft, "addCartItemDialog");
+            }
         }
 
         txtQty.setText(String.valueOf(intQty));
@@ -331,6 +370,8 @@ public class SellFragment extends Fragment implements ProductListAdapter.OnProdu
         Double price = new Double(0);
         if (cartItems.size() > 0) {
             for (int i = 0; i < cartItems.size(); i++) {
+                Log.d("CHECKOUT_ITEMS", new Gson().toJson(cartItems));
+                Log.d("CHECKOUT_ITEMS", new Gson().toJson(cartItems.get(i)));
                 price += (cartItems.get(i).getQty() * cartItems.get(i).getPrice());
             }
         }

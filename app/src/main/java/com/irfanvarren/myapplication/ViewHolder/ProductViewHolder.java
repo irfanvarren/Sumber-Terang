@@ -85,7 +85,8 @@ public class ProductViewHolder extends RecyclerView.ViewHolder implements View.O
                     price.setVisibility(View.VISIBLE);
                 }
 
-                if(this.viewHolderType == 2 && product.cartPrice <= 0){
+                if(this.viewHolderType == 2){
+
                     TextView remainingStock = itemView.findViewById(R.id.remainingStock);
                     remainingStock.setVisibility(View.VISIBLE);
                     remainingStock.setText("Sisa Stok : "+ String.valueOf(product.product.getQty()));

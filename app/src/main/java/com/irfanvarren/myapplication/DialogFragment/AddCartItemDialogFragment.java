@@ -133,6 +133,11 @@ TextView dialogTitle = (TextView) view.findViewById(R.id.dialogTitle);
                     mQty = Integer.parseInt(strQty);
                 }
 
+                if(mQty > mProduct.getQty()){
+                    Toast.makeText(mContext, "Stok tidak mencukupi !", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 String strPrice = txtPrice.getEditText().getText().toString().trim();
                 if (strPrice.length() > 0) {
                     mPrice = Double.parseDouble(strPrice);
