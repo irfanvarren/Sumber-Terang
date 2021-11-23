@@ -133,6 +133,7 @@ public class DebtDetailActivity extends AppCompatActivity implements PaymentList
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
             if (resultCode == REQUEST_CODE) {
                 this.finish();
             }
