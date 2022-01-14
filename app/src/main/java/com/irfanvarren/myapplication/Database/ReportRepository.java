@@ -14,6 +14,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoField;
 
+import com.irfanvarren.myapplication.Model.DateConverter;
 import com.irfanvarren.myapplication.Model.Report;
 import com.irfanvarren.myapplication.Model.ReportDetail;
 import androidx.sqlite.db.SimpleSQLiteQuery;
@@ -43,11 +44,39 @@ public class ReportRepository {
         ZoneId zoneId = ZoneId.systemDefault();
         LocalDate startDate = now.with(TemporalAdjusters.firstDayOfMonth());
         LocalDate endDate = now.with(TemporalAdjusters.lastDayOfMonth());
-        
+
         Long start = startDate.atStartOfDay(zoneId).toEpochSecond() * 1000;
         Long end = endDate.atTime(LocalTime.MAX).atZone(zoneId).toEpochSecond() * 1000;
-        
+
         return db.reportDao().getByDate(start,end);
+    }
+
+    public LiveData<List<Report>> getByDate(Date startDate, Date endDate){
+        LocalDate now = LocalDate.now();
+        Long start = new Long(0);
+        Long end = new Long(0);
+
+        ZoneId zoneId = ZoneId.systemDefault();
+
+        if(startDate != null){
+            LocalDate startLocalDate = startDate.toInstant().atZone(zoneId).toLocalDate();
+            start = startLocalDate.atStartOfDay(zoneId).toEpochSecond() * 1000;
+        }
+
+        if(endDate != null){
+            LocalDate endLocalDate = endDate.toInstant().atZone(zoneId).toLocalDate();
+            end = endLocalDate.atTime(LocalTime.MAX).atZone(zoneId).toEpochSecond() * 1000;
+        }
+
+        if(start > 0 && end <= 0){
+            return db.reportDao().getAfterDate(start);
+        }else if(start <= 0 && end > 0){
+            return db.reportDao().getBeforeDate(end);
+        }else if(start > 0 && end > 0){
+            return db.reportDao().getByDate(start, end);
+        }
+
+        return this.getThisMonth();
     }
 
     public LiveData<List<Report>> getToday(){

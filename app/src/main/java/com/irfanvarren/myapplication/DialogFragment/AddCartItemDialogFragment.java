@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
 import com.irfanvarren.myapplication.Database.ProductRepository;
 import com.irfanvarren.myapplication.Database.PurchaseRepository;
 import com.irfanvarren.myapplication.Model.Product;
@@ -53,7 +54,8 @@ public class AddCartItemDialogFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         Bundle bundle = getArguments();
         mProductId = bundle.getInt("productId");
-        mProduct = (Product) bundle.getSerializable("product");
+        mProductRepository = new ProductRepository(getActivity().getApplication());
+        mProduct = mProductRepository.getProductById(mProductId);
         mPosition = bundle.getInt("position");
         Integer qty = bundle.getInt("qty");
         Double price = bundle.getDouble("price");
@@ -67,7 +69,7 @@ public class AddCartItemDialogFragment extends DialogFragment {
         TextInputLayout txtPrice = (TextInputLayout) view.findViewById(R.id.price);
         Button submitBtn = (Button) view.findViewById(R.id.submitBtn);
         Button cancelBtn = (Button) view.findViewById(R.id.cancelBtn);
-TextView dialogTitle = (TextView) view.findViewById(R.id.dialogTitle);
+        TextView dialogTitle = (TextView) view.findViewById(R.id.dialogTitle);
 
         if (type == 1) {
             dialogTitle.setText("Pembelian");
@@ -80,7 +82,6 @@ TextView dialogTitle = (TextView) view.findViewById(R.id.dialogTitle);
             dialogTitle.setText("Penjualan");
             txtPrice.setHint("Harga Jual");
             if(mProductId != 0) {
-                mProductRepository = new ProductRepository(getActivity().getApplication());
                 sellPrice = Double.valueOf(mProductRepository.getProductPrice(mProductId));
             }
         }
@@ -133,7 +134,9 @@ TextView dialogTitle = (TextView) view.findViewById(R.id.dialogTitle);
                     mQty = Integer.parseInt(strQty);
                 }
 
-                if(mQty > mProduct.getQty()){
+                Log.d("mQty",String.valueOf(mQty));
+                Log.d("mProduct",new Gson().toJson(mProduct));
+                if(mQty > mProduct.getQty() && type == 2){
                     Toast.makeText(mContext, "Stok tidak mencukupi !", Toast.LENGTH_SHORT).show();
                     return;
                 }

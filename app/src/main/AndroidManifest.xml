@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.irfanvarren.myapplication">
+    package="com.irfanvarren.myapplication" >
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -15,9 +15,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyApplication">
-        <activity android:name=".ReportActivity"></activity>
-        <activity android:name=".ReportDetailActivity"></activity>
+        android:theme="@style/Theme.MyApplication" >
+        <activity
+            android:name=".ReportDetailActivity"
+            android:exported="false" />
+        <activity android:name=".ReportActivity" />
+        <activity android:name=".ReportListActivity" />
         <activity android:name=".ReceivableActivity" />
         <activity android:name=".ReceivableDetailActivity" />
         <activity android:name=".ReceivableInputActivity" />
@@ -75,7 +78,7 @@
         <activity
             android:name=".ProductActivity"
             android:label="Produk" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -87,7 +90,7 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.android.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true" >
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />

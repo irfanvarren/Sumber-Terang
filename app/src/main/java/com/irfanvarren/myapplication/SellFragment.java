@@ -225,7 +225,7 @@ public class SellFragment extends Fragment implements ProductListAdapter.OnProdu
         } else {
             AddCartItemDialogFragment addCartItemDialogFragment = new AddCartItemDialogFragment();
             Bundle bundle = new Bundle();
-            bundle.putSerializable("product", currentProduct.product);
+            bundle.putSerializable("productId", currentProduct.product.id);
             bundle.putInt("position", position);
             bundle.putInt("type",2);
 

@@ -216,7 +216,7 @@ public class BuyFragment extends Fragment implements ProductListAdapter.OnProduc
         } else {
             AddCartItemDialogFragment addCartItemDialogFragment = new AddCartItemDialogFragment();
             Bundle bundle = new Bundle();
-            bundle.putSerializable("product", currentProduct.product);
+            bundle.putSerializable("productId", currentProduct.product.id);
             bundle.putInt("position", position);
             bundle.putInt("type",1);
 

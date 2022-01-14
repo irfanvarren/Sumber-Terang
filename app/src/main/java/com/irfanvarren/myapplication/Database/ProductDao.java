@@ -39,6 +39,9 @@ public interface ProductDao {
     @Query("SELECT price from products where id = :id limit 1")
     Integer getProductPrice(Integer id);
 
+    @Query("SELECT *, COALESCE((select SUM(qty) from inventory_managements where inventory_managements.product_id = products.id),0) as qty from products where id = :id limit 1")
+    Product getProductById(Integer id);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Product... products);
 

@@ -37,6 +37,8 @@ public class ReportViewModel extends AndroidViewModel {
         return mRepository.getLastMonth();
     }
 
+    public LiveData<List<Report>> getByDate(Date startDate, Date endDate){ return mRepository.getByDate(startDate, endDate); }
+
     public LiveData<Double> getTotalIncome(String durationType){
         return mRepository.getTotalIncome(durationType);
     }

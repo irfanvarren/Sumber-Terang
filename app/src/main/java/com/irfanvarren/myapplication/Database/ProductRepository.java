@@ -64,6 +64,10 @@ public class ProductRepository {
         });
     }
 
+    public Product getProductById(Integer productId){
+        return db.productDao().getProductById(productId);
+    }
+
     public LiveData<List<ProductAndCategory>> searchProductByName(String query){
         return db.productDao().searchByName(query);
     }

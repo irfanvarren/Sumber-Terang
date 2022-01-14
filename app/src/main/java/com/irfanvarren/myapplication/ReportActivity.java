@@ -10,11 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Toast;
 import android.widget.TextView;
-import android.util.Log;
-
-import com.google.gson.Gson;
 
 import android.widget.LinearLayout;
 import android.widget.EditText;
@@ -43,8 +39,8 @@ public class ReportActivity extends AppCompatActivity implements ReportListAdapt
     private String mDurationType = "Bulan Ini";
     private MaterialDatePicker mStartDatePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Select Date").build();
     private MaterialDatePicker mEndDatePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Select Date").build();
-    private Date mStartDate = new Date(), mEndDate = new Date();
-    private Double mTotalIncome = 0.0, mTotalExpense = 0.0;
+    private Date mStartDate = null, mEndDate = null;
+    private Double mTotalIncome = 0.0, mTotalExpense = 0.0, mNetProfit = 0.0;
 
     private ReportViewModel mReportViewModel;
     private LiveData<List<Report>> mReportList;
@@ -89,6 +85,9 @@ public class ReportActivity extends AppCompatActivity implements ReportListAdapt
             txtTotalExpense.setText("Rp. " + nf.format(totalExpense));
         });
 
+        mNetProfit = mTotalIncome - mTotalExpense;
+        txtNetProfit.setText("Rp. "+mNetProfit.toString());
+
         ArrayAdapter<String> durationAdapter = new ArrayAdapter<String>(this,
         android.R.layout.simple_dropdown_item_1line, DURATION_TYPES);
         mTxtDurationType.setAdapter(durationAdapter);
@@ -98,30 +97,30 @@ public class ReportActivity extends AppCompatActivity implements ReportListAdapt
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 mDurationType =  adapterView.getItemAtPosition(i).toString();
-                if(mDurationType.equals("Bulan Ini")) {
-                
-                mReportList = mReportViewModel.getThisMonth();
-                mReportList.observe(ReportActivity.this, report -> {
-                    adapter.submitList(report);
-                });
-                   
-                }else if(mDurationType.equals("Hari Ini")){
-                    mReportList = mReportViewModel.getToday();
-                    mReportList.observe(ReportActivity.this, report -> {
-                        adapter.submitList(report);
-                    });
 
-                }else if(mDurationType.equals("Bulan Lalu")){
-                    mReportList = mReportViewModel.getLastMonth();
-                    mReportList.observe(ReportActivity.this, report -> {
-                        adapter.submitList(report);
-                    });
-                }else if(mDurationType.equals("Pilih Tanggal")){
-                    //Toast.makeText(getApplicationContext(),"Fitur ini masih belum tersedia",Toast.LENGTH_SHORT).show();
-                    customDateWrapper.setVisibility(View.VISIBLE);                  
-                    Toast.makeText(getApplicationContext(),"show hidden select date",Toast.LENGTH_SHORT).show();
+
+                if(mDurationType.equals("Pilih Tanggal")){
+                    customDateWrapper.setVisibility(View.VISIBLE);
+                    startDate.setText("");
+                    endDate.setText("");
                 }else{
-                    Toast.makeText(getApplicationContext(),"Fitur ini masih belum tersedia",Toast.LENGTH_SHORT).show();
+                    customDateWrapper.setVisibility(View.GONE);
+                    if(mDurationType.equals("Bulan Ini")) {
+                        mReportList = mReportViewModel.getThisMonth();
+                        mReportList.observe(ReportActivity.this, report -> {
+                            adapter.submitList(report);
+                        });
+                    }else if(mDurationType.equals("Hari Ini")){
+                        mReportList = mReportViewModel.getToday();
+                        mReportList.observe(ReportActivity.this, report -> {
+                            adapter.submitList(report);
+                        });
+                    }else if(mDurationType.equals("Bulan Lalu")){
+                        mReportList = mReportViewModel.getLastMonth();
+                        mReportList.observe(ReportActivity.this, report -> {
+                            adapter.submitList(report);
+                        });
+                    }
                 }
             }
         });
@@ -151,7 +150,10 @@ public class ReportActivity extends AppCompatActivity implements ReportListAdapt
                 Date date = dateConverter.getDate();
                 SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy");
                 startDate.setText(df.format(date));
-
+                mReportList = mReportViewModel.getByDate(mStartDate,mEndDate);
+                mReportList.observe(ReportActivity.this, report -> {
+                    adapter.submitList(report);
+                });
             }
         });
 
@@ -165,7 +167,10 @@ public class ReportActivity extends AppCompatActivity implements ReportListAdapt
                 Date date = dateConverter.getDate();
                 SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy");
                 endDate.setText(df.format(date));
-
+                mReportList = mReportViewModel.getByDate(mStartDate,mEndDate);
+                mReportList.observe(ReportActivity.this, report -> {
+                    adapter.submitList(report);
+                });
             }
         });
      
@@ -173,7 +178,7 @@ public class ReportActivity extends AppCompatActivity implements ReportListAdapt
 
     @Override
     public void ReportClick(Integer position,Report report) {
-        Intent intent = new Intent(getApplicationContext(), ReportDetailActivity.class);
+        Intent intent = new Intent(getApplicationContext(), ReportListActivity.class);
         intent.putExtra("report", report);
         startActivity(intent);
     }
