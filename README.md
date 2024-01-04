@@ -1,4 +1,4 @@
-## Merupakan aplikasi Point Of Sales untuk toko elektronik Sumber Terang  
+## Aplikasi Point Of Sales untuk toko elektronik Sumber Terang  
 
 Aplikasi ini digunakan untuk mencatat transaksi jual beli pada toko elektronik Sumber Terang. Aplikasi ini dibuat menggunakan android studio dengan bahasa pemograman java dan database SQLite.  
 
